@@ -2,6 +2,8 @@
 
 Experimental Windows mod for the original Rivals of Aether 2.1.9.1. Adds up to eight players in Local Versus.
 
+This is an experimental preview. There may be bugs. Replays are not currently a feature of this mod.
+
 ## Features
 
 - Eight character-selection slots with fighter names.
@@ -34,16 +36,6 @@ The installer creates a separate copy at `%LOCALAPPDATA%\RivalsEightLocal\Game`.
 For another destination, add `-Destination "D:\Games\RivalsEightLocal"`. The destination must be new and separate from the Steam game directory. Use `-ValidateOnly` to check files without installing.
 
 Do not distribute the game directory created by the installer. The release ZIP contains only the mod, source code, and documentation.
-
-## Compatibility and limitations
-
-This is a preview release. Eight simultaneous human inputs have not been tested. Parsec may supply local virtual controllers, but eight Parsec inputs are unverified.
-
-Short automated tests covered all 18 native fighters and Sandbag in extra slots. Separate tests covered Charlie Kirk and Sans (Legacy). These tests do not establish compatibility with every Workshop character, stage, moveset, or matchup.
-
-Teams, replays, alternate modes, and every stage are unverified. A stage with hazards produced an error. The local Abyss enemy-wave layout is replaced with a hazard-free layout to avoid conflicting player IDs. Stages with four spawn points reuse those points for extra players.
-
-CPU controls were visually checked after their placement was corrected. Human interaction with the latest difficulty arrows and CPU character re-selection still needs confirmation. See `TESTING.md` for the validation record.
 
 ## Save files
 
