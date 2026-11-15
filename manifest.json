@@ -1,0 +1,73 @@
+{
+  "version": "0.1.0-preview",
+  "files": [
+    {
+      "path": "CPU-SELECTION-CHECKS.json",
+      "sha256": "a5f6eebac9e9348aab06484fc86826732cf6bbd8dcc48f55417e9d40b5dec843"
+    },
+    {
+      "path": "Install.ps1",
+      "sha256": "e545e914414be358aaf9aaa61a4d8d58370b1f231e5f5cd75ba8b8cd7126a1b0"
+    },
+    {
+      "path": "Launch.cmd",
+      "sha256": "fd9f1c2edb08d43f20d3f31bbd418db60970a1d23fdb8db2ccbc1874df494596"
+    },
+    {
+      "path": "Launch.ps1",
+      "sha256": "4a6022df6acd5dede04b6f68c82eae7c190d9af6de55412f5aa7dc8a9fc067f8"
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "293b48232722d2ee5d07cd35f58834d3b140f5ae0a419b338c299b0bab7beee5"
+    },
+    {
+      "path": "mod/catch_error_mini.dll",
+      "sha256": "d0581a925709a8848497fa769cc698350b1d00131fbff7320b2a797369cc6dad"
+    },
+    {
+      "path": "README.md",
+      "sha256": "8f9d18d2e99f4bd41f7a7079f01620cda48e01a5b54f00764cf4dceb663871d4"
+    },
+    {
+      "path": "RELEASE-NOTES.md",
+      "sha256": "ec54ab572507901b1b163650257dfa914c259268d5838eca8491119fa461073b"
+    },
+    {
+      "path": "source/Build.ps1",
+      "sha256": "5bbc55d40e91f380971757d066896b0dec2db9b72a6bf2be22e4e8d52f1a0488"
+    },
+    {
+      "path": "source/eight_player_css.h",
+      "sha256": "e7d0e596fad0af68fb4f76a6836172fe44b6aa42ba05eabdeec2408f18639935"
+    },
+    {
+      "path": "source/eight_player_hud.h",
+      "sha256": "8f7181b2a3fa1ca19e71ce9beee93b48ab0e4e26728b7218c4ad22cfef282164"
+    },
+    {
+      "path": "source/eight_player_results.h",
+      "sha256": "910e8447cde6fd3b23b9926c3ec41f8c353d7fa2ed200a044d20e795603e8803"
+    },
+    {
+      "path": "source/match_harness.h",
+      "sha256": "3e613a130cfcac2c69f726b50dc5934691b8c9f87f796a3f0c55cf29f4d3524e"
+    },
+    {
+      "path": "source/release_guard.h",
+      "sha256": "12dc79ff9c2275accab694d01f5b33a21cb2e1f260ecb25131b8ac9c96aae8f6"
+    },
+    {
+      "path": "source/slot_arrays.h",
+      "sha256": "b74fbf6b56b4127dc2171ef39974dff24c3c5a12f483e6bd34634057788b7ec2"
+    },
+    {
+      "path": "source/slot_probe.c",
+      "sha256": "229f9f1ffe3252d21565f701482ce7f4bc037e4235c92acce72ca2498fe17d26"
+    },
+    {
+      "path": "TESTING.md",
+      "sha256": "b991674e063922fb77308206b922e677a16d8ba5acd59510f00b2fefb3aea8cd"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-15",
+  "native_patch_signatures": "passed",
+  "emulated_native_token_scan": "slots 0-8 checked; slot 5 no longer excluded",
+  "emulated_native_pickup_distance": "passed",
+  "cpu_level_and_token_layout_policy": "passed",
+  "cpu_level_array_extended": "ai_level (193) included",
+  "mod_dll_sha256": "d0581a925709a8848497fa769cc698350b1d00131fbff7320b2a797369cc6dad",
+  "game_launched": false,
+  "desktop_control_used": false,
+  "in_game_verification": "pending"
+}
