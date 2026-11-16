@@ -2,6 +2,8 @@
 
 Adds up to eight players to Local Versus in the original Rivals of Aether. Requires Windows and the Steam version of Rivals of Aether 2.1.9.1.
 
+A subscription to the [Local+ Workshop stage](https://steamcommunity.com/sharedfiles/filedetails/?id=3840181185) is required. On first launch, accept the prompt to open its Steam overlay page, click Subscribe, then close the overlay with Shift+Tab. Keep Steam and its in-game overlay enabled.
+
 There may be bugs. Replays are not currently a feature of this mod.
 
 ## Install

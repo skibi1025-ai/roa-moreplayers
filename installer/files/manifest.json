@@ -1,9 +1,9 @@
 {
-  "version": "0.1.3-preview",
+  "version": "0.1.4-preview",
   "files": [
     {
       "path": "../../docs/RELEASE-NOTES.md",
-      "sha256": "f8ce182cd0bc71578308366b7dafb0ef39cf30679eb2f404a88db57e8892a01a"
+      "sha256": "3fc2117dfed597d9657d75358c60b05f3a2feb249f0fb08c0e2f14cd4e4927f9"
     },
     {
       "path": "../../docs/TESTING.md",
@@ -15,7 +15,7 @@
     },
     {
       "path": "Install.ps1",
-      "sha256": "4a99f440299a73aac16a53e078eb625c099e5382ba591da907743659a9f8aef1"
+      "sha256": "25edda5793b9fe3df207273e43959825e8f44cdf583fd257281963f24f6a2b3b"
     },
     {
       "path": "Launch.cmd",
@@ -31,7 +31,7 @@
     },
     {
       "path": "mod/catch_error_mini.dll",
-      "sha256": "45f5fbedf939f7536284e3c6f912243057a7ee6b45e58f1eddaf637ebbf011fc"
+      "sha256": "ee4a996733adb916486aebfad85220f4e8ef110c7a0432e31a7670d5650628a9"
     },
     {
       "path": "Setup.cmd",
@@ -75,7 +75,7 @@
     },
     {
       "path": "../../source/slot_probe.c",
-      "sha256": "d5b1965584d7ff194ab557cfc1ad7095a20a5c17969bbd580ed2c6df9eeaa26b"
+      "sha256": "bba342eb408d27c3aa6661929b4d240a9ae76fbbc73010b3dc8f01d5e192944b"
     },
     {
       "path": "Update.cmd",
@@ -96,6 +96,10 @@
     {
       "path": "../Setup.cmd",
       "sha256": "d7812b229e910e7e9b24412bc7bcc0643d2645e5477fec8e2d83d6d780d932eb"
+    },
+    {
+      "path": "../../source/workshop_access.h",
+      "sha256": "6bd3e51789b11052196df61e8a74bf9e3b0a20ee4f3fe4c4e904a6742ec78d6a"
     }
   ]
 }

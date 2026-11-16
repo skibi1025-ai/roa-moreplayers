@@ -31,6 +31,6 @@ Set-SharedModFile -Source (Join-Path $PSScriptRoot 'mod\catch_error_mini.dll') -
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Launch.ps1') -Destination $target
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Launch.cmd') -Destination $target
 Set-Content -LiteralPath (Join-Path $target 'hud-layout.txt') -Value 'bottom' -Encoding ASCII
-$record = [ordered]@{ version='0.1.3-preview'; gameSha256=$expectedExe; modSha256=(Get-FileHash -LiteralPath (Join-Path $target 'catch_error_mini.dll') -Algorithm SHA256).Hash; source=$source; installed=(Get-Date).ToString('o') }
+$record = [ordered]@{ version=$manifest.version; gameSha256=$expectedExe; modSha256=(Get-FileHash -LiteralPath (Join-Path $target 'catch_error_mini.dll') -Algorithm SHA256).Hash; source=$source; installed=(Get-Date).ToString('o') }
 $record | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $target 'installation.json') -Encoding UTF8
 Write-Output "Installed a separate copy at $target. Start it with Launch.cmd. The Steam installation is unchanged."

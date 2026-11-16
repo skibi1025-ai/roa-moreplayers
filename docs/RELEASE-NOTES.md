@@ -1,3 +1,8 @@
+# Next preview
+
+- Fixed a white X replacing Workshop fighters in slot 5.
+- Initialized missing control state for human players in slots 5–8.
+
 # 0.1.3 preview
 
 - The extracted folder contains Setup.cmd, Launch.cmd, READ-ME.txt, and files/.
