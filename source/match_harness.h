@@ -9,7 +9,9 @@ static int harness_stage_room=11;
 static int harness_roster_round;
 static int harness_fixture_started;
 #ifdef REAL_MENU_FLOW
-static Event harness_stage_orig;
+static Event harness_stage_orig,harness_stagebox_create_orig;
+static void*harness_stageboxes[64];static int harness_stagebox_count;
+static void __cdecl harness_stagebox_create(void*s,void*o){harness_stagebox_create_orig(s,o);if(harness_stagebox_count<64)harness_stageboxes[harness_stagebox_count++]=s;}
 static unsigned harness_stage_frames;
 static Script harness_cursor_movement_orig;
 static int harness_stage_target;
@@ -23,6 +25,16 @@ static double harness_instance_value(void*s,void*o,RV instance,const char*name){
 }
 static void __cdecl harness_stage(void*s,void*o){
  void*g=*(void**)(base+0x604a8d8-0x400000);unsigned frame=++harness_stage_frames;
+#ifdef RANDOM_MATCH_TEST
+ if(frame==180){
+  for(int i=0;i<harness_stagebox_count;i++)if(number(var(harness_stageboxes[i],5874))==1){
+   for(int p=1;p<=8;p++)array_number(g,4727,p,1);setnum(g,5904,0);((Event)(base+0x441e180-0x400000))(harness_stageboxes[i],o);
+   for(int p=1;p<=8;p++){double selected=array_value(g,4805,p);logmsg("HARNESS Random P%d resolved to %g",p,selected);if(selected<2||selected>20)ExitProcess(53);}
+   setnum(g,0x49f,1);harness_stage_room=11;RV room={.real=11},out={.type=5};builtin(0x557e310,&out,s,o,1,&room);return;
+  }
+  logmsg("HARNESS did not find the native stage box");ExitProcess(54);
+ }
+#endif
  if(frame==180){
   for(int i=0;i<30;i++){
    RV args[2]={{.real=282},{.real=i}},instance={.type=5};builtin(0x557bc00,&instance,s,o,2,args);
@@ -47,7 +59,13 @@ static void harness_load_workshop(void*s,void*o){
   if((item.type&0xffffff)!=2||!item.ptr){release(&item);continue;}Array*data=item.ptr;
   Dimension*record=data->length==1?data->dims:NULL;
   if(!record||record->length<=10||!record->values){release(&item);continue;}
-  int p=0;for(int column=0;column<record->length;column++){RV*value=record->values+column;if((value->type&0xffffff)==1&&value->ptr){const char*text=*(const char**)value->ptr;if(text&&strstr(text,"3799054154"))p=6;if(text&&strstr(text,"3824607103"))p=8;}}
+  int p=0;for(int column=0;column<record->length;column++){RV*value=record->values+column;if((value->type&0xffffff)==1&&value->ptr){const char*text=*(const char**)value->ptr;
+#ifdef FULL_WORKSHOP_TEST
+ static const char*ids[]={"3014312006","2085116778","2242316629","3690442640","3037252388","2139756191","2058525660","3162607695"};for(int i=0;text&&i<8;i++)if(strstr(text,ids[i]))p=i+1;
+#else
+ if(text&&strstr(text,"3799054154"))p=6;if(text&&strstr(text,"3824607103"))p=8;
+#endif
+}}
   if(p){
    RV player={.real=p},first=record->values[3],second=record->values[10],out={.type=5};
    if((first.type&0xffffff)==1&&first.ptr)((int*)first.ptr)[1]++;
@@ -56,7 +74,13 @@ static void harness_load_workshop(void*s,void*o){
    logmsg("HARNESS loaded Workshop catalog row=%d P%d context=%g loading=%g",row,p,array_value(g,1236,p),number(var(g,0xb4a)));loaded++;
    release(&out);release(&first);release(&second);
   }
-  release(&item);if(loaded==2)return;
+  release(&item);if(loaded==
+#ifdef FULL_WORKSHOP_TEST
+ 8
+#else
+ 2
+#endif
+ )return;
  }
  logmsg("HARNESS Workshop character missing from catalog");ExitProcess(48);
 }
@@ -80,6 +104,11 @@ static void harness_fighter(void*s,void*o){
  }
 #ifndef HUD_PREVIEW
  unsigned knockout_at=300;
+#ifdef STOCK_RESPAWN_TEST
+ knockout_at=120;
+ if(harness_updates[p]==200||harness_updates[p]==560){void*g=*(void**)(base+0x604a8d8-0x400000);double expected=harness_updates[p]==200?2:1;if(p>1&&array_value(g,4815,p)!=expected){logmsg("HARNESS stock loss failed P%d at %u stocks=%g expected=%g",p,harness_updates[p],array_value(g,4815,p),expected);ExitProcess(52);}}
+ if(harness_updates[p]==480||harness_updates[p]==840)knockout_at=harness_updates[p];
+#endif
 #ifdef WIN_SCREEN_PREVIEW
  knockout_at+=p*20;
 #endif
@@ -96,10 +125,13 @@ static void harness_fighter(void*s,void*o){
     p>1
 #endif
   &&array_value(g,4815,p)>0){
-#ifdef WORKSHOP_MATCH_TEST
+#if defined(WORKSHOP_MATCH_TEST) && defined(SPARSE_MATCH_TEST)
    array_number(g,4805,7,0);setnum(s,3566,7);logmsg("HARNESS testing invalid unselected attacker P7 during Workshop knockout");
 #endif
-   array_number(g,4815,p,1);*(float*)((char*)s+0xa4)=10000;logmsg("HARNESS requesting final-stock KO for P%d",p);}
+   #ifndef STOCK_RESPAWN_TEST
+   array_number(g,4815,p,1);
+#endif
+   *(float*)((char*)s+0xa4)=10000;logmsg("HARNESS requesting final-stock KO for P%d",p);}
  }
 #endif
 }
@@ -123,14 +155,37 @@ static void __cdecl harness_global(void*s,void*o){
 #endif
  if(room==8&&!harness_results_seen){harness_results_seen=1;logmsg("HARNESS reached local results screen");}
  if(room==8&&++harness_result_frames==100){
+  void*g=*(void**)(base+0x604a8d8-0x400000);RV playing={.type=5};RV*args[]={var(g,492)};
+  typedef RV*(__cdecl*Legacy)(void*,void*,RV*,int,int,RV**);
+  ((Legacy)(base+0x5549fd0-0x400000))(s,o,&playing,1,*(int*)(base+0x5fb3ba4-0x400000),args);
+  logmsg("HARNESS victory fanfare handle=%g playing=%g",number(var(g,492)),number(&playing));
+  if(number(&playing)==0){args[0]=var(g,488);((Legacy)(base+0x5549fd0-0x400000))(s,o,&playing,1,*(int*)(base+0x5fb3ba4-0x400000),args);if(number(&playing)==0)ExitProcess(55);}release(&playing);
   RV path={.type=5},out={.type=5};((void(__cdecl*)(RV*,const char*))(base+0x554a750-0x400000))(&path,"results-preview.png");builtin(0x5582930,&out,s,o,1,&path);release(&path);
  }
 #ifndef HUD_PREVIEW
- if(harness_ticks==780&&room==8){
+ if(harness_ticks==
+#ifdef STOCK_RESPAWN_TEST
+ 1500
+#else
+ 780
+#endif
+ &&room==8){
   void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4623,6,1);logmsg("HARNESS requesting return from results using P6 Start");
  }
- if(harness_ticks==781){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4623,6,0);}
- if(harness_ticks==1050){
+ if(harness_ticks==
+#ifdef STOCK_RESPAWN_TEST
+ 1501
+#else
+ 781
+#endif
+ ){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4623,6,0);}
+ if(harness_ticks==
+#ifdef STOCK_RESPAWN_TEST
+ 1770
+#else
+ 1050
+#endif
+ ){
   int all=1;for(int p=1;p<=8;p++){logmsg("HARNESS P%d total updates=%u",p,harness_updates[p]);
 #ifdef SPARSE_MATCH_TEST
    if(p!=6&&p!=8)continue;
@@ -177,12 +232,16 @@ static void __cdecl harness_css(void*s,void*o){
     1
 #endif
    );array_number(g,4727,p,1);array_number(g,4805,p,
-#ifdef HUD_PREVIEW
+#if defined(RANDOM_MATCH_TEST)
+    1
+#elif defined(HUD_PREVIEW)
     p+1
 #elif defined(WIN_SCREEN_PREVIEW)
     p+1
 #elif defined(ROSTER_TEST)
     p<=4?p+1:(harness_roster_round==5?(p==5?20:p-4):2+(harness_roster_round*4+p-5)%18)
+#elif defined(FULL_WORKSHOP_TEST)
+    21
 #elif defined(WORKSHOP_MATCH_TEST)
     p==6||p==8?21:2
 #else
@@ -228,7 +287,7 @@ static void __cdecl harness_css(void*s,void*o){
   array_number(g,4815,8,0);array_number(g,4786,8,1);logmsg("HARNESS seeding stale eliminated/disconnected P8 state before new match");
 #endif
 #ifdef REAL_MENU_FLOW
-  harness_stage_frames=0;harness_stage_target=0;
+  harness_stage_frames=0;harness_stage_target=0;harness_stagebox_count=0;
   RV done={.type=5};((Script)(base+0x33919a0-0x400000))(s,o,&done,0,NULL);release(&done);
   ((Event)(base+0x418f560-0x400000))(s,o);
   for(int p=1;p<=8;p++)if(array_value(g,4737,p)!=0)array_number(g,4727,p,0);
@@ -237,6 +296,9 @@ static void __cdecl harness_css(void*s,void*o){
 #ifdef STAGE_SPAWN_TEST
   setnum(g,0x49f,88);array_number(g,0x4d4,0,6);harness_stage_room=57;
   logmsg("HARNESS Workshop stage fixture stage=88 custom=6 room=%d",harness_stage_room);
+#endif
+  #if defined(RANDOM_MATCH_TEST) && !defined(REAL_MENU_FLOW)
+  RV done={.type=5};((Script)(base+0x33919a0-0x400000))(s,o,&done,0,NULL);release(&done);for(int p=1;p<=8;p++)logmsg("HARNESS Random P%d resolved to %g",p,array_value(g,4805,p));
 #endif
   logmsg("HARNESS starting native CPU fighter fixture on room %d",harness_stage_room);harness_room(s,o,harness_stage_room);
  }

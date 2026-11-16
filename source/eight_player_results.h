@@ -1,5 +1,12 @@
 static Event results_create_orig,results_draw_orig,results_step_orig,results_alarm0_orig,results_alarm1_orig,results_alarm2_orig,results_other5_orig,results_other72_orig;
-static int results_custom,results_frames,results_winner;
+static int results_custom,results_frames,results_winner,results_music_loop;
+static void results_music_call(uint32_t address,void*s,void*o,int track){RV result={.type=5},value={.real=track};RV*args[]={&value};((Script)(base+address-0x400000))(s,o,&result,track<0?0:1,track<0?NULL:args);release(&result);}
+static void results_music_update(void*s,void*o){
+ if(results_music_loop)return;void*g=*(void**)(base+0x604a8d8-0x400000);RV playing={.type=5};RV*args[]={var(g,492)};
+ typedef RV*(__cdecl*Legacy)(void*,void*,RV*,int,int,RV**);
+ ((Legacy)(base+0x5549fd0-0x400000))(s,o,&playing,1,*(int*)(base+0x5fb3ba4-0x400000),args);
+ if(number(&playing)==0){results_music_call(0x30ce0e0,s,o,910);results_music_loop=1;logmsg("Results music loop started");}release(&playing);
+}
 static struct {int active,head,frame,portrait,portrait_frame,stocks,kills,place,eliminated;double damage;char name[64];} results_players[9];
 static RV* results_custom_field(void*g,int p,int field){
  RV*v=var(g,0x4bf);int context=(int)array_value(g,1236,p);if((v->type&0xffffff)!=2||!v->ptr)return NULL;Array*a=v->ptr;
@@ -10,6 +17,7 @@ static void __cdecl results_create(void*s,void*o){
  results_custom=0;results_frames=0;
  if(local_eight&&number(var(g,4208))==0)for(int p=5;p<=8;p++)if(array_value(g,4737,p)!=0)results_custom=1;
  if(results_custom){
+  results_music_loop=0;results_music_call(0x30d3910,s,o,-1);results_music_call(0x30d42a0,s,o,-1);results_music_call(0x30d0400,s,o,981);
   results_winner=(int)number(var(g,2903));
   for(int p=1;p<=8;p++){
    results_players[p].active=match_slots[p]||array_value(g,4737,p)!=0;
@@ -48,7 +56,7 @@ static void __cdecl results_create(void*s,void*o){
 }
 static void __cdecl results_step(void*s,void*o){
  if(!results_custom){results_step_orig(s,o);return;}
- if(++results_frames<60)return;
+ results_music_update(s,o);if(++results_frames<60)return;
  void*g=*(void**)(base+0x604a8d8-0x400000);int accept=0;
  for(int p=1;p<=8;p++)if(array_value(g,4623,p)!=0||array_value(g,4549,p)!=0)accept=1;
  RV key={.real=13},pressed={.type=5};builtin(0x55948c0,&pressed,s,o,1,&key);if(number(&pressed)!=0)accept=1;
@@ -102,5 +110,5 @@ static void __cdecl results_draw(void*s,void*o){
 static void __cdecl results_alarm0(void*s,void*o){if(!results_custom)results_alarm0_orig(s,o);}
 static void __cdecl results_alarm1(void*s,void*o){if(!results_custom)results_alarm1_orig(s,o);}
 static void __cdecl results_alarm2(void*s,void*o){if(!results_custom)results_alarm2_orig(s,o);}
-static void __cdecl results_other5(void*s,void*o){if(!results_custom)results_other5_orig(s,o);}
+static void __cdecl results_other5(void*s,void*o){if(!results_custom)results_other5_orig(s,o);else{results_music_call(0x30d3910,s,o,-1);results_music_call(0x30d42a0,s,o,-1);}}
 static void __cdecl results_other72(void*s,void*o){if(!results_custom)results_other72_orig(s,o);}

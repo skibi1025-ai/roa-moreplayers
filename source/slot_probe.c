@@ -141,6 +141,7 @@ static int loading_workshop_player;
 static char workshop_display_names[9][64];
 static RV* __cdecl ugc_set_hook(void*s,void*o,RV*r,int n,RV**a){
  int previous=loading_workshop_player,p=n>0?(int)number(a[0]):0;loading_workshop_player=p>=1&&p<=8?p:0;
+ MEMORYSTATUSEX memory={.dwLength=sizeof memory};if(GlobalMemoryStatusEx(&memory))logmsg("Workshop load P%d available virtual memory=%llu MiB",p,(unsigned long long)(memory.ullAvailVirtual/(1024*1024)));
  RV*result=ugc_set_orig(s,o,r,n,a);loading_workshop_player=previous;return result;
 }
 static RV* __cdecl read_item_name_hook(void*s,void*o,RV*r,int n,RV**a){
@@ -166,11 +167,13 @@ static void logmsg(const char *fmt,...) {char path[MAX_PATH]; snprintf(path,size
 static void __cdecl test_failure(const char *format,...){
  char message[4096];va_list ap;va_start(ap,format);vsnprintf(message,sizeof message,format,ap);va_end(ap);
  logmsg("TEST FAILED: %s",message);
+ MEMORYSTATUSEX memory={.dwLength=sizeof memory};if(GlobalMemoryStatusEx(&memory))logmsg("Failure available virtual memory=%llu MiB",(unsigned long long)(memory.ullAvailVirtual/(1024*1024)));
  uintptr_t*trace=*(uintptr_t**)(base+0x604a560-0x400000);
  for(int i=0;trace&&i<24;i++){logmsg("GML %s line %lu",(char*)trace[1],(unsigned long)trace[2]);trace=(uintptr_t*)trace[0];}
  void *frames[32];USHORT count=CaptureStackBackTrace(0,32,frames,NULL);
  for(USHORT i=0;i<count;i++)logmsg("frame %u va=%08lx",i,(unsigned long)((uintptr_t)frames[i]-base+0x400000));
- stop_release("The experimental mod encountered an error and must close. Details were saved to slot-probe.log beside the copied game. Your Steam installation was not modified.");
+ if(strstr(message,"Memory allocation failed")||strstr(message,"Out of memory")||strstr(message,"out of memory"))stop_release("Rivals ran out of memory while loading Workshop content. Restart with lighter fighters or a lighter stage. Details are in slot-probe.log beside the copied game.");
+ stop_release("The mod encountered an error and must close. Details were saved to slot-probe.log beside the copied game. Your Steam installation was not modified.");
 }
 static int install_test_error_handler(void){
  unsigned char*p=(unsigned char*)(base+0x5549940-0x400000);const unsigned char expected[]={0x81,0xec,0x04,0x04,0,0};
@@ -324,7 +327,21 @@ static RV* __cdecl stage_destination_hook(void*s,void*o,RV*r,int n,RV**a){
 static RV* __cdecl death_hook(void*s,void*o,RV*r,int n,RV**a){
  void*g=*(void**)(base+0x604a8d8-0x400000);int last=(int)number(var(s,3566));
  if(local_eight&&number(var(g,4208))==0&&(last<0||last>8||(last>0&&array_value(g,4805,last)<1))){logmsg("Cleared invalid knockout attacker %d select=%g",last,last>=0&&last<=8?array_value(g,4805,last):-1);setnum(s,3566,0);}
- return death_orig(s,o,r,n,a);
+ 
+ int p=(int)number(var(s,4725));double before=p>=1&&p<=8?array_value(g,4815,p):-1;
+ RV*result=death_orig(s,o,r,n,a);
+ double after=p>=1&&p<=8?array_value(g,4815,p):-1;
+ if(local_eight&&number(var(g,4208))==0&&p>=5&&p<=8&&before>after&&after>0&&number(var(s,5999))==14){
+  double x,y;if(stage_spawn_point(g,p,&x,&y)){
+   *(float*)((char*)s+0xa0)=(float)x;*(float*)((char*)s+0xa4)=(float)y;
+   array_number(g,2851,p,x);array_number(g,2852,p,y);
+   logmsg("Respawn P%d stocks=%g at %g,%g",p,after,x,y);
+  }
+ }
+#ifdef AUTOMATED_MATCH_TEST
+ if(before!=after)logmsg("KO P%d stocks=%g->%g state=%g timer=%g waiting=%g x=%g y=%g",p,before,after,number(var(s,5999)),number(var(s,6002)),number(var(s,6926)),*(float*)((char*)s+0xa0),*(float*)((char*)s+0xa4));
+#endif
+ return result;
 }
 static RV* __cdecl spawn_num_hook(void*s,void*o,RV*r,int n,RV**a){
  void*g=*(void**)(base+0x604a8d8-0x400000);int p=(int)number(var(s,4725));
@@ -493,6 +510,7 @@ static void __cdecl local_hook(void*s,void*o){nseen=0;fixture_slots=0;native_spa
  patch_word(0xc9d782,0x40140000,0x40220000);
  patch_word(0xc9dbd2,0x40140000,0x40220000);
  patch_word(0xa6b562,0x40140000,0x40220000);
+ if(!patch_word(0x4421ec2,0x40140000,0x40220000)||!patch_word(0x4423112,0x40140000,0x40220000))stop_release("Random selection signature mismatch.");
  patch_word(0x418fb77,0x40140000,0x40220000);
  patch_word(0x418ca42,0x40140000,0x40220000);
  patch_word(0x418e682,0x40140000,0x40220000);
@@ -628,7 +646,7 @@ static void setup(void){static int done;if(done)return;done=1;base=(uintptr_t)Ge
   harness_title_orig=hook(0x41a2a10,harness_title);harness_css_orig=hook(0x41936c0,harness_css);
   harness_global_orig=hook(0x4893560,harness_global);
 #ifdef REAL_MENU_FLOW
-  harness_stage_orig=hook(0x43fae50,harness_stage);
+  harness_stage_orig=hook(0x43fae50,harness_stage);harness_stagebox_create_orig=hook(0x441d270,harness_stagebox_create);
   harness_cursor_movement_orig=(Script)hook(0xf18320,(Event)harness_cursor_movement);
 #endif
 #ifdef HUD_PREVIEW
