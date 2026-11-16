@@ -18,9 +18,26 @@ Windows, Steam, and an installed copy of the supported game version are required
 
 Local Versus only. Online play is not supported. A Steam Workshop subscription does not install this native mod; the separate release ZIP is required.
 
+## Changes in 0.1.1
+
+- Corrected respawn placement for players 5–8 so a knockout does not consume the remaining stocks.
+- Random fighter selection processes all eight slots before a stage loads.
+- Workshop loading errors include available memory in the diagnostic log.
+- Restored victory fanfare and results music.
+
+## Updating an existing installation
+
+Download and extract the new release ZIP, close Rivals, then run:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Update.ps1
+```
+
+If you installed to a different directory, add `-Destination "D:\Games\RivalsEightLocal"`. The updater verifies the installed copy and new package, backs up the previous mod files, and preserves game saves.
+
 ## Installation
 
-1. Download `RivalsEightLocal-0.1.0-preview.zip` from this repository's Releases page and extract it.
+1. Download `RivalsEightLocal-0.1.1-preview.zip` from this repository's Releases page and extract it.
 2. Close all Rivals windows. Keep Steam running.
 3. Open PowerShell in the extracted directory and run this command with your game installation path:
 
@@ -57,7 +74,7 @@ Use Zig 0.13.0:
 .\source\Build.ps1 -Zig "C:\path\to\zig.exe"
 ```
 
-The release DLL enables `EXPERIMENTAL_MATCH`. Automated test and screenshot definitions are disabled. Source files contain no comments.
+The build writes `source/catch_error_mini.dll`.
 
 ## License
 

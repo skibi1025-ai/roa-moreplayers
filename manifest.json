@@ -1,21 +1,17 @@
 {
-  "version": "0.1.0-preview",
+  "version": "0.1.1-preview",
   "files": [
     {
-      "path": "CPU-SELECTION-CHECKS.json",
-      "sha256": "a5f6eebac9e9348aab06484fc86826732cf6bbd8dcc48f55417e9d40b5dec843"
-    },
-    {
       "path": "Install.ps1",
-      "sha256": "e545e914414be358aaf9aaa61a4d8d58370b1f231e5f5cd75ba8b8cd7126a1b0"
+      "sha256": "c9127c4fe7b407b43fdac7eba9a23a7f56ab57835152d610aec54b6e15be329a"
     },
     {
       "path": "Launch.cmd",
-      "sha256": "fd9f1c2edb08d43f20d3f31bbd418db60970a1d23fdb8db2ccbc1874df494596"
+      "sha256": "564b16c53852372a6932cd67213530e30985ed932e2602b64c2eb6a07c1c6983"
     },
     {
       "path": "Launch.ps1",
-      "sha256": "4a6022df6acd5dede04b6f68c82eae7c190d9af6de55412f5aa7dc8a9fc067f8"
+      "sha256": "6d8789fb8c958f61d8f07a9c8dd7b142d122cca0c2d20acba4e37af685f74cb8"
     },
     {
       "path": "LICENSE.txt",
@@ -23,15 +19,15 @@
     },
     {
       "path": "mod/catch_error_mini.dll",
-      "sha256": "d0581a925709a8848497fa769cc698350b1d00131fbff7320b2a797369cc6dad"
+      "sha256": "cfc8f40c62a7f56c415233ddacd76905de12ed4f4de3b8f5c820b08fe51c2c75"
     },
     {
       "path": "README.md",
-      "sha256": "6b02911064e64aa7e87927eb216ee4d5126aef02cfe791baf24aa48c538a4440"
+      "sha256": "81c3452d0f2aada2beda2abccd52cedfddbb58a7850986eff8850928314944d5"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "ec54ab572507901b1b163650257dfa914c259268d5838eca8491119fa461073b"
+      "sha256": "d7b00d9d35b53004a40732d4103f01ca142cba59be77e1591ceb654738feda17"
     },
     {
       "path": "source/Build.ps1",
@@ -47,11 +43,11 @@
     },
     {
       "path": "source/eight_player_results.h",
-      "sha256": "910e8447cde6fd3b23b9926c3ec41f8c353d7fa2ed200a044d20e795603e8803"
+      "sha256": "203e646381822ebe2667e2d9721fcb3554c9050f7a07799c5cbce2c235298788"
     },
     {
       "path": "source/match_harness.h",
-      "sha256": "3e613a130cfcac2c69f726b50dc5934691b8c9f87f796a3f0c55cf29f4d3524e"
+      "sha256": "70b37beb4c5a36bd0a7586fee969ad6250227ffe5eedd3222f90934e52fd9e57"
     },
     {
       "path": "source/release_guard.h",
@@ -59,15 +55,23 @@
     },
     {
       "path": "source/slot_arrays.h",
-      "sha256": "b74fbf6b56b4127dc2171ef39974dff24c3c5a12f483e6bd34634057788b7ec2"
+      "sha256": "b90a9c50ab63df7c24a52484d66ac13fc972a5c29e829e250dab9571987fc21a"
     },
     {
       "path": "source/slot_probe.c",
-      "sha256": "229f9f1ffe3252d21565f701482ce7f4bc037e4235c92acce72ca2498fe17d26"
+      "sha256": "e714554421124049e31d7b6836c10e2af10def76e7fd7e3ebf9b653e29451a1b"
     },
     {
       "path": "TESTING.md",
-      "sha256": "b991674e063922fb77308206b922e677a16d8ba5acd59510f00b2fefb3aea8cd"
+      "sha256": "3fe28e8deca520460016355fd8ee760b307061bad3b7f569bf7160b43976589a"
+    },
+    {
+      "path": "Update.ps1",
+      "sha256": "95259c501f1bf9cb5e131f358c8d315bde92bd72493733189bd9ec9879d9da38"
+    },
+    {
+      "path": "VALIDATION.json",
+      "sha256": "1084a296785dba3b41ce463dc8031cec407146a6469fea7cc7c0a8ff9e402a2f"
     }
   ]
 }
