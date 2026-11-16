@@ -5,6 +5,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+. (Join-Path $PSScriptRoot 'SharedFiles.ps1')
 $source = (Resolve-Path -LiteralPath $GamePath).Path.TrimEnd('\')
 $target = [IO.Path]::GetFullPath($Destination).TrimEnd('\')
 if ($target -eq $source -or $target.StartsWith($source + '\', [StringComparison]::OrdinalIgnoreCase) -or $source.StartsWith($target + '\', [StringComparison]::OrdinalIgnoreCase)) { throw 'The destination must be separate from the original game directory.' }
@@ -23,13 +24,13 @@ foreach ($entry in $manifest.files) {
 if ($ValidateOnly) { Write-Output 'Source and package verified. No files changed.'; return }
 if (Get-Process -Name RivalsofAether -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe }) { throw 'Close the source game before installing.' }
 New-Item -ItemType Directory -Path $target | Out-Null
-Get-ChildItem -LiteralPath $source -Force | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $target -Recurse -Force }
+Get-ChildItem -LiteralPath $source -Force | Where-Object { $_.Name -notin @('catch_error_mini.dll','workshop','stages','buddies') } | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $target -Recurse -Force }
 if ((Get-FileHash -LiteralPath (Join-Path $target 'RivalsofAether.exe') -Algorithm SHA256).Hash -ne $expectedExe) { throw 'Copied executable verification failed. The incomplete destination has been retained for inspection.' }
 Copy-Item -LiteralPath $originalDll -Destination (Join-Path $target 'catch_error_original.dll')
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'mod\catch_error_mini.dll') -Destination (Join-Path $target 'catch_error_mini.dll') -Force
+Set-SharedModFile -Source (Join-Path $PSScriptRoot 'mod\catch_error_mini.dll') -Destination (Join-Path $target 'catch_error_mini.dll')
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Launch.ps1') -Destination $target
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Launch.cmd') -Destination $target
 Set-Content -LiteralPath (Join-Path $target 'hud-layout.txt') -Value 'bottom' -Encoding ASCII
-$record = [ordered]@{ version='0.1.2-preview'; gameSha256=$expectedExe; modSha256=(Get-FileHash -LiteralPath (Join-Path $target 'catch_error_mini.dll') -Algorithm SHA256).Hash; source=$source; installed=(Get-Date).ToString('o') }
+$record = [ordered]@{ version='0.1.3-preview'; gameSha256=$expectedExe; modSha256=(Get-FileHash -LiteralPath (Join-Path $target 'catch_error_mini.dll') -Algorithm SHA256).Hash; source=$source; installed=(Get-Date).ToString('o') }
 $record | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $target 'installation.json') -Encoding UTF8
 Write-Output "Installed a separate copy at $target. Start it with Launch.cmd. The Steam installation is unchanged."

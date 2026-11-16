@@ -1,80 +1,54 @@
 RIVALS EIGHT LOCAL
 
-Adds up to eight players to Local Versus in the original Rivals of Aether.
-Windows and the Steam version of Rivals of Aether 2.1.9.1 are required.
-There may be bugs. Replays are not currently a feature of this mod.
+INSTALL OR UPDATE
 
-INSTALL
+1. Extract the whole ZIP into a new folder.
+2. Close Rivals and keep Steam running.
+3. Double-click Setup.cmd and wait for "Setup complete".
+4. Double-click Launch.cmd in this same folder.
+5. Choose Local > Versus in the game.
 
-1. Download the mod ZIP from the GitHub Releases page:
-   https://github.com/skibi1025-ai/roa-moreplayers/releases
-   Choose RivalsEightLocal, not the automatic Source code downloads.
-2. Right-click the ZIP, choose Extract All, then open the extracted folder.
-3. Close Rivals of Aether and keep Steam running.
-4. Double-click Setup.cmd and wait for "Setup complete".
-   Setup normally finds the game automatically. If it asks for a folder,
-   follow the instructions shown in the setup window.
-5. Double-click Launch.cmd in the same extracted folder.
-6. In the game, choose Local > Versus.
+Setup finds the Steam game automatically and reuses your existing mod
+installation when present. If an older installation is in a custom folder,
+open files, double-click Update.cmd, and enter that folder when asked.
 
-No commands need to be typed for a normal installation. The .cmd files use
-Windows PowerShell automatically; seeing PowerShell during setup is normal.
-Setup does not open the game automatically.
+Keep the files folder together with Setup.cmd and Launch.cmd. You do not
+need to open it during normal use. It contains the support files, source,
+license, release notes, and diagnostic records.
 
-UPDATE
+STORAGE
 
-Download the newest mod ZIP and extract it into a new folder. Close the
-game, then double-click Setup.cmd in the new download. It updates the
-existing installation automatically. After setup, use Launch.cmd to play.
-You can delete the older extracted download folder afterward.
+Your subscribed Workshop characters and stages are loaded from their
+existing location, not copied by setup. Where supported, the mod DLL uses
+a hard link so the downloaded and installed files share the same disk data.
+Different drives or unsupported file systems require one small DLL copy.
+Do not edit the linked DLL directly. Extract future releases into a new
+folder and run Setup.cmd to update.
 
-If your previous installation is in a custom folder and setup cannot find
-it, double-click Update.cmd and paste the address of that installed folder
-when asked. This is the folder containing the copied RivalsofAether.exe.
-Your game saves are preserved. Previous mod files are backed up.
-
-WHERE THE GAME IS INSTALLED
-
-Setup creates a separate copy of your game. The default location is:
+Setup still creates a separate copy of the base game, so the Steam files
+stay untouched. Updates reuse that copy. The default installed location is
 %LOCALAPPDATA%\RivalsEightLocal\Game
 
-You do not need to open that folder to play. Use Launch.cmd in the extracted
-download folder. To open the installed folder yourself, press Windows+R,
-paste the location above, and press Enter. Its Launch.cmd also works.
-The original Steam game files are not changed.
+RESULTS SCREEN
 
-TROUBLESHOOTING
+All eight players appear in ranked rows beside the winner portrait.
+Press Z on the keyboard or A on a controller to ready up. The screen
+continues when all human players are ready. Press X on a controller or
+Tab on the keyboard for statistics. Start or Enter continues immediately.
 
-If a window shows an error, copy the message or take a screenshot of it.
-If setup cannot find the game, use Steam > Library > right-click Rivals of
-Aether > Manage > Browse local files. Copy the folder address into setup.
-If you already installed to a different location, use Update.cmd.
-Keep all files from the ZIP together. Do not move Launch.cmd on its own.
-Launch.cmd must be used after Setup.cmd has completed successfully.
+HELP
 
-Large Workshop character combinations can run out of memory. Try fewer
-large characters or a simpler stage, then restart the game.
-Game error details are saved in slot-probe.log in the installed folder.
+Windows and Steam Rivals of Aether 2.1.9.1 are required. Local Versus only.
+There may be bugs. Replays are not currently a feature of this mod.
+Large Workshop character combinations can run out of memory.
 
-FEATURES
-
-Eight character-selection slots, controller and keyboard input, an
-eight-player HUD, and a results screen for all participants. Installed
-Workshop fighters are supported, subject to individual compatibility.
-Local Versus only. Online play is not supported. Subscribing on Workshop
-alone does not install this mod; the GitHub download is required.
-
-SAVES AND REMOVAL
-
-The separate copy shares the original game's save folder. Before launching,
-the launcher backs up saves and settings to:
+If setup fails, copy the error message. If the game reports an error, its
+details are saved in slot-probe.log inside the installed game folder.
+The launcher backs up saves and settings before each launch to:
 %LOCALAPPDATA%\RivalsEightLocal\SaveBackups
 
-To remove the mod, close it and delete its separate installed game folder.
-Shared saves and save backups remain. Do not distribute the copied game.
-
-SOURCE AND LICENSE
-
-The source folder contains the mod source and Build.ps1. Build with Zig
-0.13.0. The mod code uses the included MIT license. Game and Workshop assets
-are not included. This project is not affiliated with Aether Studios or Valve.
+The copied game shares the original save folder. To remove the mod, close
+it and delete its separate installed game folder. Saves and backups remain.
+Game and Workshop assets are not included. Do not distribute the copied
+game. The mod code uses the MIT license in files/License.txt.
+This project is not affiliated with Aether Studios or Valve.

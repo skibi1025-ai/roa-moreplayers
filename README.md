@@ -18,7 +18,15 @@ Setup normally finds the game automatically. If it asks for a folder, follow the
 
 Download the newest mod ZIP and extract it into a new folder. Close the game and double-click **Setup.cmd** in the new download. It updates your existing installation. Use **Launch.cmd** afterward. Saves are preserved and previous mod files are backed up.
 
-If an older installation is in a custom location and setup cannot find it, double-click **Update.cmd** and paste the installed game folder address when asked.
+If an older installation is in a custom location and setup cannot find it, open **files/**, double-click **Update.cmd** and paste the installed game folder address when asked.
+
+## Results controls
+
+Press **Z** on the keyboard or **A** on a controller to ready up. The screen continues after all human players are ready. **X** on a controller or **Tab** shows statistics. **Start** or **Enter** continues immediately.
+
+## Storage
+
+Workshop characters and stages are loaded from their existing location. The mod DLL and its backups share disk data through hard links when supported. A small DLL copy is used when linking is unavailable, such as between different drives. Extract future releases into a new folder rather than overwriting linked files.
 
 ## Game location
 
@@ -31,7 +39,7 @@ To open the installed folder manually, press **Windows+R**, paste the location a
 - Eight character-selection slots with fighter names.
 - Keyboard and controller input.
 - Eight-player HUD with percentages, character heads, and stocks.
-- Results screen with placements, stocks, KOs, and victory music.
+- Victory screen with a large winner portrait, eight ranked rows, detailed statistics, and native victory music.
 - Installed Workshop fighters, subject to individual compatibility.
 
 Local Versus only. Online play is not supported. A Workshop subscription alone does not install the mod.
@@ -56,4 +64,4 @@ This project is not affiliated with Aether Studios or Valve.
 - `source/`: gameplay source and build script.
 - `docs/`: release notes and validation records.
 
-For installation, download the ZIP from Releases. The release ZIP layout is unchanged.
+For installation, download the ZIP from Releases. The extracted ZIP contains **Setup.cmd**, **Launch.cmd**, **READ-ME.txt**, and **files/**.

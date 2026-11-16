@@ -112,7 +112,11 @@ static void harness_fighter(void*s,void*o){
 #ifdef WIN_SCREEN_PREVIEW
  knockout_at+=p*20;
 #endif
- if(harness_updates[p]==knockout_at){
+ if(harness_updates[p]==knockout_at
+#ifdef RESULTS_STYLE_PREVIEW
+ ||(p>1&&harness_updates[p]>knockout_at&&harness_updates[p]<knockout_at+300&&harness_updates[p]%20==0)
+#endif
+ ){
   void*g=*(void**)(base+0x604a8d8-0x400000);
   if(
 #ifdef SPARSE_MATCH_TEST
@@ -154,17 +158,36 @@ static void __cdecl harness_global(void*s,void*o){
  if(harness_ticks==200){RV path={.type=5},out={.type=5};((void(__cdecl*)(RV*,const char*))(base+0x554a750-0x400000))(&path,"workshop-match.png");builtin(0x5582930,&out,s,o,1,&path);release(&path);}
 #endif
  if(room==8&&!harness_results_seen){harness_results_seen=1;logmsg("HARNESS reached local results screen");}
+#ifdef RESULTS_ALLCPU_READY_TEST
+ static unsigned cpu_ready_tick;if(room==8&&harness_result_frames==230)cpu_ready_tick=harness_ticks;
+ if(cpu_ready_tick&&harness_ticks==cpu_ready_tick+60&&room!=3){logmsg("HARNESS spectator Z did not continue");ExitProcess(59);}
+#endif
+#ifdef RESULTS_READY_TEST
+ static unsigned first_ready_tick,second_ready_tick;
+ if(room==8&&harness_result_frames==190){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4549,1,1);first_ready_tick=harness_ticks;logmsg("HARNESS P1 confirming results");}
+ if(first_ready_tick&&harness_ticks==first_ready_tick+1){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4549,1,0);}
+ if(first_ready_tick&&harness_ticks==first_ready_tick+25&&room!=8){logmsg("HARNESS results left before all humans ready");ExitProcess(56);}
+ if(room==8&&harness_result_frames==230){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4549,2,1);second_ready_tick=harness_ticks;logmsg("HARNESS P2 confirming results");}
+ if(second_ready_tick&&harness_ticks==second_ready_tick+1){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4549,2,0);}
+ if(second_ready_tick&&harness_ticks==second_ready_tick+25&&room!=3){logmsg("HARNESS all humans ready did not continue");ExitProcess(57);}
+#endif
  if(room==8&&++harness_result_frames==100){
   void*g=*(void**)(base+0x604a8d8-0x400000);RV playing={.type=5};RV*args[]={var(g,492)};
   typedef RV*(__cdecl*Legacy)(void*,void*,RV*,int,int,RV**);
   ((Legacy)(base+0x5549fd0-0x400000))(s,o,&playing,1,*(int*)(base+0x5fb3ba4-0x400000),args);
+  RV duration={.type=5},position={.type=5},track={.real=1000};builtin(0x56ad9d0,&duration,s,o,1,&track);builtin(0x56ad090,&position,s,o,1,var(g,492));logmsg("HARNESS victory audio duration=%g position=%g volume=%g",number(&duration),number(&position),number(var(g,4114)));if(number(&duration)<=0||number(&position)<=0)ExitProcess(58);
   logmsg("HARNESS victory fanfare handle=%g playing=%g",number(var(g,492)),number(&playing));
   if(number(&playing)==0){args[0]=var(g,488);((Legacy)(base+0x5549fd0-0x400000))(s,o,&playing,1,*(int*)(base+0x5fb3ba4-0x400000),args);if(number(&playing)==0)ExitProcess(55);}release(&playing);
   RV path={.type=5},out={.type=5};((void(__cdecl*)(RV*,const char*))(base+0x554a750-0x400000))(&path,"results-preview.png");builtin(0x5582930,&out,s,o,1,&path);release(&path);
  }
+#ifdef RESULTS_STYLE_PREVIEW
+ if(room==8&&harness_result_frames==140){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4561,6,1);}
+ if(room==8&&harness_result_frames==141){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4561,6,0);}
+ if(room==8&&harness_result_frames==170){RV path={.type=5},out={.type=5};((void(__cdecl*)(RV*,const char*))(base+0x554a750-0x400000))(&path,"results-stats-preview.png");builtin(0x5582930,&out,s,o,1,&path);release(&path);}
+#endif
 #ifndef HUD_PREVIEW
  if(harness_ticks==
-#ifdef STOCK_RESPAWN_TEST
+#if defined(STOCK_RESPAWN_TEST) || defined(RESULTS_STYLE_PREVIEW)
  1500
 #else
  780
@@ -173,14 +196,14 @@ static void __cdecl harness_global(void*s,void*o){
   void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4623,6,1);logmsg("HARNESS requesting return from results using P6 Start");
  }
  if(harness_ticks==
-#ifdef STOCK_RESPAWN_TEST
+#if defined(STOCK_RESPAWN_TEST) || defined(RESULTS_STYLE_PREVIEW)
  1501
 #else
  781
 #endif
  ){void*g=*(void**)(base+0x604a8d8-0x400000);array_number(g,4623,6,0);}
  if(harness_ticks==
-#ifdef STOCK_RESPAWN_TEST
+#if defined(STOCK_RESPAWN_TEST) || defined(RESULTS_STYLE_PREVIEW)
  1770
 #else
  1050
@@ -211,6 +234,7 @@ static void __cdecl harness_title(void*s,void*o){
 static void __cdecl harness_css(void*s,void*o){
  harness_css_orig(s,o);
  ++harness_css_frames;
+ if(harness_results_seen)return;
 #ifdef WORKSHOP_MATCH_TEST
  if(harness_css_frames==120)harness_load_workshop(s,o);
  if(number(var(*(void**)(base+0x604a8d8-0x400000),0xb4a))!=0)return;
@@ -236,7 +260,7 @@ static void __cdecl harness_css(void*s,void*o){
     1
 #elif defined(HUD_PREVIEW)
     p+1
-#elif defined(WIN_SCREEN_PREVIEW)
+#elif defined(WIN_SCREEN_PREVIEW) && !defined(FULL_WORKSHOP_TEST)
     p+1
 #elif defined(ROSTER_TEST)
     p<=4?p+1:(harness_roster_round==5?(p==5?20:p-4):2+(harness_roster_round*4+p-5)%18)

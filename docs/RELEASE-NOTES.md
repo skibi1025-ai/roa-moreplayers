@@ -1,8 +1,11 @@
-# 0.1.2-preview
+# 0.1.3 preview
 
-- Double-click Setup.cmd to install or update.
-- Setup detects Steam game libraries automatically.
-- Launch.cmd works from the extracted download folder.
-- Added READ-ME.txt with simpler installation and update steps.
+- The extracted folder contains Setup.cmd, Launch.cmd, READ-ME.txt, and files/.
+- The installed mod DLL shares disk data with the downloaded file through a hard link when supported. A small file copy is used when linking is unavailable.
+- Workshop directories are excluded from the base-game copy.
+- The eight-player victory screen uses native RoA artwork, fonts, placement badges, a large winner portrait, and ranked rows.
+- Z / A readies a human player. The screen continues once all human players are ready.
+- X / Tab switches the statistics view. Start / Enter continues immediately.
+- Results use native victory tracks followed by the native results loop, with the saved music volume.
 
-The gameplay DLL is unchanged from 0.1.1. There may be bugs. Replays are not currently a feature of this mod.
+There may be bugs. Replays are not currently a feature of this mod.

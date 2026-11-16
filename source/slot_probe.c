@@ -138,14 +138,20 @@ static void __cdecl team_create_hook(void*s,void*o){team_create_orig(s,o);last_t
 typedef RV*(__cdecl *Script)(void*,void*,RV*,int,RV**);
 static Script ugc_set_orig,read_item_name_orig;
 static int loading_workshop_player;
-static char workshop_display_names[9][64];
+static char workshop_display_names[9][64],workshop_directories[9][MAX_PATH];
+static void workshop_capture_path(int p,int n,RV**a){
+ if(p<1||p>8)return;
+ for(int i=0;i<n;i++)if((a[i]->type&0xffffff)==1&&a[i]->ptr){const char*text=*(const char**)a[i]->ptr;if(!text)continue;DWORD attributes=GetFileAttributesA(text);if(attributes==INVALID_FILE_ATTRIBUTES)continue;char full[MAX_PATH];if(!GetFullPathNameA(text,sizeof full,full,NULL))continue;if(!(attributes&FILE_ATTRIBUTE_DIRECTORY)){char*slash=strrchr(full,'\\');if(slash)*slash=0;else continue;}snprintf(workshop_directories[p],sizeof workshop_directories[p],"%s",full);}
+}
+
 static RV* __cdecl ugc_set_hook(void*s,void*o,RV*r,int n,RV**a){
  int previous=loading_workshop_player,p=n>0?(int)number(a[0]):0;loading_workshop_player=p>=1&&p<=8?p:0;
+ workshop_capture_path(p,n,a);
  MEMORYSTATUSEX memory={.dwLength=sizeof memory};if(GlobalMemoryStatusEx(&memory))logmsg("Workshop load P%d available virtual memory=%llu MiB",p,(unsigned long long)(memory.ullAvailVirtual/(1024*1024)));
  RV*result=ugc_set_orig(s,o,r,n,a);loading_workshop_player=previous;return result;
 }
 static RV* __cdecl read_item_name_hook(void*s,void*o,RV*r,int n,RV**a){
- RV*result=read_item_name_orig(s,o,r,n,a);int p=loading_workshop_player;
+ int p=loading_workshop_player;workshop_capture_path(p,n,a);RV*result=read_item_name_orig(s,o,r,n,a);
  if(p>=1&&p<=8&&(result->type&0xffffff)==1&&result->ptr){const char*name=*(const char**)result->ptr;if(name)snprintf(workshop_display_names[p],sizeof workshop_display_names[p],"%s",name);}
  return result;
 }
@@ -308,6 +314,7 @@ static RV* __cdecl player_init_hook(void*s,void*o,RV*r,int n,RV**a){
  int p=(int)number(var(s,4725));RV*result=player_init_orig(s,o,r,n,a);
  void*g=*(void**)(base+0x604a8d8-0x400000);int room=current_room(s);double x,y;
  int instance=*(int*)((char*)s+0x78);
+
  if(local_eight&&p>=5&&p<=8&&initialized_spawn_instance[p]!=instance&&number(var(s,3346))!=0&&room>=10&&number(var(g,4208))==0&&stage_spawn_point(g,p,&x,&y)){
   *(float*)((char*)s+0xa0)=(float)x;*(float*)((char*)s+0xa4)=(float)y;
   array_number(g,2851,p,x);array_number(g,2852,p,y);
