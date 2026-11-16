@@ -49,3 +49,11 @@ The copied game shares the original save folder. The launcher backs up saves and
 Build the source with Zig 0.13.0 using `source/Build.ps1`. The mod uses the included MIT license. Game and Workshop assets are not included. Do not distribute the copied game folder.
 
 This project is not affiliated with Aether Studios or Valve.
+
+## Repository folders
+
+- `installer/`: setup, launcher, and mod files.
+- `source/`: gameplay source and build script.
+- `docs/`: release notes and validation records.
+
+For installation, download the ZIP from Releases. The release ZIP layout is unchanged.

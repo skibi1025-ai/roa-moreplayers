@@ -14,7 +14,7 @@
       "sha256": "afee99cc75c584eff3d696f1c8bde6d34f21fcb81616755970afced1a7bc4467"
     },
     {
-      "path": "LICENSE.txt",
+      "path": "../LICENSE.txt",
       "sha256": "293b48232722d2ee5d07cd35f58834d3b140f5ae0a419b338c299b0bab7beee5"
     },
     {
@@ -26,7 +26,7 @@
       "sha256": "56d6e18016cf8af1449ba6f12c2536e8035275ef32b2e3230038e7dc1528e464"
     },
     {
-      "path": "RELEASE-NOTES.md",
+      "path": "../docs/RELEASE-NOTES.md",
       "sha256": "daca2c34e1debdf59a78bda41136c707426709970b507c05614fb6282828119a"
     },
     {
@@ -38,39 +38,39 @@
       "sha256": "17b732a746838684f23cea967bdfa8f1970a014e67851d981de4ff77e9e6bd7b"
     },
     {
-      "path": "source/Build.ps1",
+      "path": "../source/Build.ps1",
       "sha256": "5bbc55d40e91f380971757d066896b0dec2db9b72a6bf2be22e4e8d52f1a0488"
     },
     {
-      "path": "source/eight_player_css.h",
+      "path": "../source/eight_player_css.h",
       "sha256": "e7d0e596fad0af68fb4f76a6836172fe44b6aa42ba05eabdeec2408f18639935"
     },
     {
-      "path": "source/eight_player_hud.h",
+      "path": "../source/eight_player_hud.h",
       "sha256": "8f7181b2a3fa1ca19e71ce9beee93b48ab0e4e26728b7218c4ad22cfef282164"
     },
     {
-      "path": "source/eight_player_results.h",
+      "path": "../source/eight_player_results.h",
       "sha256": "203e646381822ebe2667e2d9721fcb3554c9050f7a07799c5cbce2c235298788"
     },
     {
-      "path": "source/match_harness.h",
+      "path": "../source/match_harness.h",
       "sha256": "70b37beb4c5a36bd0a7586fee969ad6250227ffe5eedd3222f90934e52fd9e57"
     },
     {
-      "path": "source/release_guard.h",
+      "path": "../source/release_guard.h",
       "sha256": "12dc79ff9c2275accab694d01f5b33a21cb2e1f260ecb25131b8ac9c96aae8f6"
     },
     {
-      "path": "source/slot_arrays.h",
+      "path": "../source/slot_arrays.h",
       "sha256": "b90a9c50ab63df7c24a52484d66ac13fc972a5c29e829e250dab9571987fc21a"
     },
     {
-      "path": "source/slot_probe.c",
+      "path": "../source/slot_probe.c",
       "sha256": "e714554421124049e31d7b6836c10e2af10def76e7fd7e3ebf9b653e29451a1b"
     },
     {
-      "path": "TESTING.md",
+      "path": "../docs/TESTING.md",
       "sha256": "483c0ad105d07d3838623aead1b0fc19c64e265a1332be94cf25ce4c4b1b32d0"
     },
     {
@@ -82,7 +82,7 @@
       "sha256": "95259c501f1bf9cb5e131f358c8d315bde92bd72493733189bd9ec9879d9da38"
     },
     {
-      "path": "VALIDATION.json",
+      "path": "../docs/VALIDATION.json",
       "sha256": "cc6887787aa8c229c0f40e8f6beceaaf8b787c922139405743010be13dbd1047"
     }
   ]
