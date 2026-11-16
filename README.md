@@ -1,81 +1,51 @@
 # Rivals Eight Local
 
-Experimental Windows mod for the original Rivals of Aether 2.1.9.1. Adds up to eight players in Local Versus.
+Adds up to eight players to Local Versus in the original Rivals of Aether. Requires Windows and the Steam version of Rivals of Aether 2.1.9.1.
 
-This is an experimental preview. There may be bugs. Replays are not currently a feature of this mod.
+There may be bugs. Replays are not currently a feature of this mod.
+
+## Install
+
+1. Open [Releases](https://github.com/skibi1025-ai/roa-moreplayers/releases) and download the newest **RivalsEightLocal** ZIP under **Assets**. Choose the mod ZIP, not Source code.
+2. Right-click the ZIP, select **Extract All**, and open the extracted folder.
+3. Close Rivals and keep Steam running.
+4. Double-click **Setup.cmd** and wait for **Setup complete**.
+5. Double-click **Launch.cmd** in the same folder, then choose **Local > Versus**.
+
+Setup normally finds the game automatically. If it asks for a folder, follow the instructions in the setup window. No commands need to be typed for a normal installation. PowerShell is used automatically.
+
+## Update
+
+Download the newest mod ZIP and extract it into a new folder. Close the game and double-click **Setup.cmd** in the new download. It updates your existing installation. Use **Launch.cmd** afterward. Saves are preserved and previous mod files are backed up.
+
+If an older installation is in a custom location and setup cannot find it, double-click **Update.cmd** and paste the installed game folder address when asked.
+
+## Game location
+
+Setup creates a separate game copy at `%LOCALAPPDATA%\RivalsEightLocal\Game` by default. Use **Launch.cmd** in the extracted download folder to play; there is no need to find the installed folder. The original Steam files are unchanged.
+
+To open the installed folder manually, press **Windows+R**, paste the location above, and press **Enter**. Its **Launch.cmd** also works. Keep all files from the download together.
 
 ## Features
 
 - Eight character-selection slots with fighter names.
-- Local controller and keyboard input.
+- Keyboard and controller input.
 - Eight-player HUD with percentages, character heads, and stocks.
-- Results screen with all participants, placements, stocks, and KOs.
-- Support for installed Steam Workshop fighters, subject to individual compatibility.
+- Results screen with placements, stocks, KOs, and victory music.
+- Installed Workshop fighters, subject to individual compatibility.
 
-## Requirements
+Local Versus only. Online play is not supported. A Workshop subscription alone does not install the mod.
 
-Windows, Steam, and an installed copy of the supported game version are required. The installer checks the exact executable and original DLL. Other game versions are rejected.
+## Help
 
-Local Versus only. Online play is not supported. A Steam Workshop subscription does not install this native mod; the separate release ZIP is required.
+The ZIP includes **READ-ME.txt** with setup, update, save, and removal information. If setup fails, share its exact error message. Game errors are recorded in `slot-probe.log` in the installed folder.
 
-## Changes in 0.1.1
+Large Workshop character combinations can run out of memory. Try fewer large characters or a simpler stage, then restart.
 
-- Corrected respawn placement for players 5–8 so a knockout does not consume the remaining stocks.
-- Random fighter selection processes all eight slots before a stage loads.
-- Workshop loading errors include available memory in the diagnostic log.
-- Restored victory fanfare and results music.
+The copied game shares the original save folder. The launcher backs up saves and settings before each launch to `%LOCALAPPDATA%\RivalsEightLocal\SaveBackups`.
 
-## Updating an existing installation
+## Source and license
 
-Download and extract the new release ZIP, close Rivals, then run:
+Build the source with Zig 0.13.0 using `source/Build.ps1`. The mod uses the included MIT license. Game and Workshop assets are not included. Do not distribute the copied game folder.
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Update.ps1
-```
-
-If you installed to a different directory, add `-Destination "D:\Games\RivalsEightLocal"`. The updater verifies the installed copy and new package, backs up the previous mod files, and preserves game saves.
-
-## Installation
-
-1. Download `RivalsEightLocal-0.1.1-preview.zip` from this repository's Releases page and extract it.
-2. Close all Rivals windows. Keep Steam running.
-3. Open PowerShell in the extracted directory and run this command with your game installation path:
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1 -GamePath "C:\Program Files (x86)\Steam\steamapps\common\Rivals of Aether"
-```
-
-The installer creates a separate copy at `%LOCALAPPDATA%\RivalsEightLocal\Game`. It does not modify the Steam installation. The execution-policy option applies only to this script process.
-
-4. Run `Launch.cmd` in the separate game directory.
-5. Select Local > Versus. Join with the keyboard and/or controllers.
-
-For another destination, add `-Destination "D:\Games\RivalsEightLocal"`. The destination must be new and separate from the Steam game directory. Use `-ValidateOnly` to check files without installing.
-
-Do not distribute the game directory created by the installer. The release ZIP contains only the mod, source code, and documentation.
-
-## Save files
-
-The separate copy shares the original game's AppData save directory. Saves are not isolated. `Launch.cmd` backs up save/settings files before each launch to `%LOCALAPPDATA%\RivalsEightLocal\SaveBackups`. Workshop asset directories are excluded.
-
-To restore a backup, close both copies and copy the selected backup files into `%LOCALAPPDATA%\RivalsofAether`. Do not run both game copies at the same time.
-
-## Troubleshooting and removal
-
-Errors are recorded in `slot-probe.log` beside the copied executable. Include reproduction steps, game version, affected slots, and Workshop item IDs in bug reports. Review logs for personal paths before sharing them.
-
-To remove the mod, close it and delete only its separate installation directory. Shared saves and save backups remain in AppData. The Steam installation remains unchanged.
-
-## Build
-
-Use Zig 0.13.0:
-
-```powershell
-.\source\Build.ps1 -Zig "C:\path\to\zig.exe"
-```
-
-The build writes `source/catch_error_mini.dll`.
-
-## License
-
-The original mod code uses the included MIT license. Game and Workshop character assets are not included. This project is not affiliated with Aether Studios or Valve.
+This project is not affiliated with Aether Studios or Valve.

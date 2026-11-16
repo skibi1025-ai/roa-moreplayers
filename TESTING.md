@@ -1,3 +1,7 @@
+# 0.1.2 setup validation
+
+Steam library detection, new-install validation, a real copied-game update, saved custom-path resolution, both launcher locations, and the missing-install error passed. PowerShell files parsed without errors and contained no comments. No game was opened for these setup checks. The gameplay DLL is identical to 0.1.1; its regression record follows.
+
 # 0.1.1 validation
 
 ## Stock handling

@@ -1,11 +1,8 @@
-# 0.1.1-preview
+# 0.1.2-preview
 
-- Corrected extra-player respawn placement after a knockout.
-- Extended stage-selection Random resolution and recent-pick data to eight slots.
-- Added available-memory diagnostics for Workshop loading failures.
-- Restored victory fanfare and results music.
-- Added Update.ps1 for existing separate installations.
+- Double-click Setup.cmd to install or update.
+- Setup detects Steam game libraries automatically.
+- Launch.cmd works from the extracted download folder.
+- Added READ-ME.txt with simpler installation and update steps.
 
-There may be bugs. Replays are not currently a feature of this mod.
-
-Large Workshop fighter sets can still exceed the 32-bit game process memory limit. Available memory depends on the selected fighters and stage.
+The gameplay DLL is unchanged from 0.1.1. There may be bugs. Replays are not currently a feature of this mod.

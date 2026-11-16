@@ -1,9 +1,9 @@
 {
-  "version": "0.1.1-preview",
+  "version": "0.1.2-preview",
   "files": [
     {
       "path": "Install.ps1",
-      "sha256": "c9127c4fe7b407b43fdac7eba9a23a7f56ab57835152d610aec54b6e15be329a"
+      "sha256": "b9fccf07c5aab41e59a663bdce5dc5d5440675c95a08ad25212aa7f4ee7a4c9c"
     },
     {
       "path": "Launch.cmd",
@@ -11,7 +11,7 @@
     },
     {
       "path": "Launch.ps1",
-      "sha256": "6d8789fb8c958f61d8f07a9c8dd7b142d122cca0c2d20acba4e37af685f74cb8"
+      "sha256": "afee99cc75c584eff3d696f1c8bde6d34f21fcb81616755970afced1a7bc4467"
     },
     {
       "path": "LICENSE.txt",
@@ -22,12 +22,20 @@
       "sha256": "cfc8f40c62a7f56c415233ddacd76905de12ed4f4de3b8f5c820b08fe51c2c75"
     },
     {
-      "path": "README.md",
-      "sha256": "81c3452d0f2aada2beda2abccd52cedfddbb58a7850986eff8850928314944d5"
+      "path": "READ-ME.txt",
+      "sha256": "56d6e18016cf8af1449ba6f12c2536e8035275ef32b2e3230038e7dc1528e464"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "d7b00d9d35b53004a40732d4103f01ca142cba59be77e1591ceb654738feda17"
+      "sha256": "daca2c34e1debdf59a78bda41136c707426709970b507c05614fb6282828119a"
+    },
+    {
+      "path": "Setup.cmd",
+      "sha256": "9fef6a31bcc061f87822a09daf4e3f0b13ba6c0620ac246c73307b7a43df39aa"
+    },
+    {
+      "path": "Setup.ps1",
+      "sha256": "17b732a746838684f23cea967bdfa8f1970a014e67851d981de4ff77e9e6bd7b"
     },
     {
       "path": "source/Build.ps1",
@@ -63,7 +71,11 @@
     },
     {
       "path": "TESTING.md",
-      "sha256": "3fe28e8deca520460016355fd8ee760b307061bad3b7f569bf7160b43976589a"
+      "sha256": "483c0ad105d07d3838623aead1b0fc19c64e265a1332be94cf25ce4c4b1b32d0"
+    },
+    {
+      "path": "Update.cmd",
+      "sha256": "c7e623fc97c11e8047114a98c6dcdc5686fe78bdd97490d2752dd04b4111e1d1"
     },
     {
       "path": "Update.ps1",
@@ -71,7 +83,7 @@
     },
     {
       "path": "VALIDATION.json",
-      "sha256": "1084a296785dba3b41ce463dc8031cec407146a6469fea7cc7c0a8ff9e402a2f"
+      "sha256": "cc6887787aa8c229c0f40e8f6beceaaf8b787c922139405743010be13dbd1047"
     }
   ]
 }

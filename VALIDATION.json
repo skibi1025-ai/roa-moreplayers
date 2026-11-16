@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1-preview",
+  "version": "0.1.2-preview",
   "native_fighter_ids_tested": [
     2,
     3,
@@ -41,5 +41,18 @@
   "updater_install_and_backup": true,
   "updater_rejects_original_and_tampered_package": true,
   "steam_installation_hashes_unchanged": true,
-  "release_dll_sha256": "cfc8f40c62a7f56c415233ddacd76905de12ed4f4de3b8f5c820b08fe51c2c75"
+  "release_dll_sha256": "cfc8f40c62a7f56c415233ddacd76905de12ed4f4de3b8f5c820b08fe51c2c75",
+  "gameplay_version": "0.1.1-preview",
+  "gameplay_dll_unchanged": true,
+  "setup_checks": [
+    "Steam library auto-detection",
+    "fresh installation ValidateOnly",
+    "existing copied-game update and backup",
+    "remembered custom installation path",
+    "extracted-folder launcher ValidateOnly",
+    "installed-folder launcher ValidateOnly",
+    "missing installation error",
+    "PowerShell parsing and comment-free scripts"
+  ],
+  "game_opened_for_setup_checks": false
 }
