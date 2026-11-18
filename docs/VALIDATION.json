@@ -23,12 +23,10 @@
   },
   "native_results_loop_transition_verified": true,
   "original_steam_file_hashes_unchanged": true,
-  "dll_sha256": "ee4a996733adb916486aebfad85220f4e8ef110c7a0432e31a7670d5650628a9",
+  "dll_sha256": "9fd364715384a6a1b578643e6fc5220776b3de5746ca2a91c980030fa000fad9",
   "baseline_validation_version": "0.1.3-preview",
   "eight_simulated_human_workshop_fighters": true,
   "slot_five_duck_and_bubbles_roster_swap": true,
   "all_eight_human_inputs_independent": true,
-  "white_x_sprite_replaced_with_loaded_workshop_animation": true,
-  "subscription_gate_mocked_cases_passed": 7,
-  "real_overlay_prompt_interactive_check": "pending"
+  "white_x_sprite_replaced_with_loaded_workshop_animation": true
 }

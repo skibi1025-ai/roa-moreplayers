@@ -7,11 +7,11 @@
     },
     {
       "path": "../../docs/TESTING.md",
-      "sha256": "5b2e5ce5dafe5df23145b1b87da93447178a0d76939b2228f26890697808d606"
+      "sha256": "948185b82e4a8c104944c18f76c135272169c9e3171112a64661a67915cf4d94"
     },
     {
       "path": "../../docs/VALIDATION.json",
-      "sha256": "4704682d9fde7e6f2d8b0b02c6418b083496b07ee5dc1c3837ea92f7367b4235"
+      "sha256": "f936b6e148dc3d40ccc4489f0b278fedc35e9a77c0f317beea8fa72753a61591"
     },
     {
       "path": "Install.ps1",
@@ -31,7 +31,7 @@
     },
     {
       "path": "mod/catch_error_mini.dll",
-      "sha256": "ee4a996733adb916486aebfad85220f4e8ef110c7a0432e31a7670d5650628a9"
+      "sha256": "9fd364715384a6a1b578643e6fc5220776b3de5746ca2a91c980030fa000fad9"
     },
     {
       "path": "Setup.cmd",
@@ -75,7 +75,7 @@
     },
     {
       "path": "../../source/slot_probe.c",
-      "sha256": "bba342eb408d27c3aa6661929b4d240a9ae76fbbc73010b3dc8f01d5e192944b"
+      "sha256": "2f6fd0a24f6dfdb55793bd490f9a22b2f3be598e774aacc4ba7774ca922a755c"
     },
     {
       "path": "Update.cmd",
@@ -91,15 +91,11 @@
     },
     {
       "path": "../READ-ME.txt",
-      "sha256": "253458f0dd26529702f1f814db13338b62f0dbdcc4cb49e44358dd99bf9f3a10"
+      "sha256": "fae2423bc07811b8f3d55ea62741ef772545294d5e7ad54a1136cec63f036f11"
     },
     {
       "path": "../Setup.cmd",
       "sha256": "d7812b229e910e7e9b24412bc7bcc0643d2645e5477fec8e2d83d6d780d932eb"
-    },
-    {
-      "path": "../../source/workshop_access.h",
-      "sha256": "6bd3e51789b11052196df61e8a74bf9e3b0a20ee4f3fe4c4e904a6742ec78d6a"
     }
   ]
 }

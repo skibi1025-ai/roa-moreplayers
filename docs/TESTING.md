@@ -9,4 +9,4 @@ Additional installer and Workshop checks are recorded in VALIDATION.json. These 
 
 Two eight-human simulations used independent controller inputs and eight distinct Workshop fighters. Duck and Bubbles swapped between slots 1 and 5 in the second run. All eight fighters retained their starting stocks through 540 frames and used loaded fighter sprites. The first run was visually checked.
 
-Seven mocked Steam-response cases checked subscription enforcement and the overlay request. The real overlay prompt still needs an interactive check. Earlier results and installer checks are the 0.1.3 baseline.
+Earlier results and installer checks are the 0.1.3 baseline.

@@ -489,8 +489,7 @@ static void __cdecl cur_hook(void*s,void*o){
 }
 static void __cdecl cur_create_hook(void*s,void*o){cur_create_orig(s,o);last_cursor=s;}
 static void __cdecl bg_create_hook(void*s,void*o){bg_create_orig(s,o);last_bg=s;}
-static int workshop_access(void);
-static void __cdecl local_hook(void*s,void*o){if(!workshop_access()){RV a={.real=2},r={.type=5};builtin(0x557e310,&r,s,o,1,&a);release(&r);return;}nseen=0;fixture_slots=0;native_spawn_count=0;memset(css_was_cpu,0,sizeof css_was_cpu);
+static void __cdecl local_hook(void*s,void*o){nseen=0;fixture_slots=0;native_spawn_count=0;memset(css_was_cpu,0,sizeof css_was_cpu);
  void*entry_global=*(void**)(base+0x604a8d8-0x400000);extend_slot_arrays(entry_global);
  patch_word(0x419c4f2,0x40140000,0x40220000);patch_word(0x419e062,0x40140000,0x40220000);
  local_orig(s,o);logmsg("Local room entered");
@@ -601,7 +600,6 @@ static void*hook_fast_sprite(void){
 #include "eight_player_hud.h"
 #include "eight_player_results.h"
 #endif
-#include "workshop_access.h"
 static void setup(void){static int done;if(done)return;done=1;base=(uintptr_t)GetModuleHandleA(NULL);logmsg("Native probe loaded base=%p",(void*)base);
   if(!supported_executable())stop_release("Unsupported game executable. This build requires the tested Rivals of Aether 2.1.9.1 executable. No mod hooks were installed.");
   if(!install_test_error_handler()){logmsg("Test error-handler signature mismatch; no slot hooks installed");return;}
@@ -610,9 +608,6 @@ static void setup(void){static int done;if(done)return;done=1;base=(uintptr_t)Ge
   if(*(uint32_t*)bound!=0x40200000||!VirtualProtect(bound,4,PAGE_EXECUTE_READWRITE,&old)){logmsg("Input initialization signature mismatch; no slot hooks installed");return;}
   *(uint32_t*)bound=0x40220000;VirtualProtect(bound,4,old,&old);FlushInstructionCache(GetCurrentProcess(),bound,4);
 
-#ifndef AUTOMATED_MATCH_TEST
-  workshop_global_orig=hook(0x4893560,workshop_global_step);if(!workshop_global_orig)stop_release("Workshop startup signature mismatch.");
-#endif
   bg_create_orig=hook(0x41a8c20,bg_create_hook);cur_create_orig=hook(CREATE_ADDR,cur_create_hook);bg_orig=hook(BG_ADDR,bg_hook);cur_orig=hook(CUR_ADDR,cur_hook);local_orig=hook(LOCAL_ADDR,local_hook);
   button_create_orig=hook(0x42a9320,button_create_hook);team_create_orig=hook(0x42b1a60,team_create_hook);bg_draw_orig=hook(0x41b4da0,bg_draw_hook);
   swap_orig=(Script)hook(0x3188f20,(Event)swap_hook);
