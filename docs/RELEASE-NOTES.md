@@ -1,7 +1,7 @@
-# Next preview
+# 0.1.4 preview
 
 - Fixed a white X replacing Workshop fighters in slot 5.
-- Initialized missing control state for human players in slots 5–8.
+- Initialized missing control state for human players in slots 5â€“8.
 
 # 0.1.3 preview
 

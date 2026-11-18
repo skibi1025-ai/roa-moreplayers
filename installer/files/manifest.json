@@ -3,15 +3,15 @@
   "files": [
     {
       "path": "../../docs/RELEASE-NOTES.md",
-      "sha256": "3fc2117dfed597d9657d75358c60b05f3a2feb249f0fb08c0e2f14cd4e4927f9"
+      "sha256": "d9fb1c7afff5e798e5643c2f90671116eeac43d778c0b3f593d87821f7b7af16"
     },
     {
       "path": "../../docs/TESTING.md",
-      "sha256": "bcda7586bf2b68ee81bc2a1f6cc02ee4f779aa0f3556208d137a93f673a799af"
+      "sha256": "5b2e5ce5dafe5df23145b1b87da93447178a0d76939b2228f26890697808d606"
     },
     {
       "path": "../../docs/VALIDATION.json",
-      "sha256": "8e37cc09eec921676a0596b43f25e62f6dec32447c699575daefc84faf2d7142"
+      "sha256": "4704682d9fde7e6f2d8b0b02c6418b083496b07ee5dc1c3837ea92f7367b4235"
     },
     {
       "path": "Install.ps1",
@@ -91,7 +91,7 @@
     },
     {
       "path": "../READ-ME.txt",
-      "sha256": "fae2423bc07811b8f3d55ea62741ef772545294d5e7ad54a1136cec63f036f11"
+      "sha256": "253458f0dd26529702f1f814db13338b62f0dbdcc4cb49e44358dd99bf9f3a10"
     },
     {
       "path": "../Setup.cmd",

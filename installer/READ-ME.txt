@@ -6,7 +6,9 @@ INSTALL OR UPDATE
 2. Close Rivals and keep Steam running.
 3. Double-click Setup.cmd and wait for "Setup complete".
 4. Double-click Launch.cmd in this same folder.
-5. Choose Local > Versus in the game.
+5. On first launch, accept the prompt to open the Steam Workshop page.
+   Subscribe to the Local+ stage, then close the overlay with Shift+Tab.
+6. Choose Local > Versus in the game.
 
 Setup finds the Steam game automatically and reuses your existing mod
 installation when present. If an older installation is in a custom folder,

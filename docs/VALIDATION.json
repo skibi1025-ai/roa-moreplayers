@@ -1,5 +1,5 @@
 {
-  "version": "0.1.3-preview",
+  "version": "0.1.4-preview",
   "status": "release validation complete",
   "native_eight_player_results_cycle": true,
   "human_confirm_waits_for_other_human": true,
@@ -23,5 +23,12 @@
   },
   "native_results_loop_transition_verified": true,
   "original_steam_file_hashes_unchanged": true,
-  "dll_sha256": "45f5fbedf939f7536284e3c6f912243057a7ee6b45e58f1eddaf637ebbf011fc"
+  "dll_sha256": "ee4a996733adb916486aebfad85220f4e8ef110c7a0432e31a7670d5650628a9",
+  "baseline_validation_version": "0.1.3-preview",
+  "eight_simulated_human_workshop_fighters": true,
+  "slot_five_duck_and_bubbles_roster_swap": true,
+  "all_eight_human_inputs_independent": true,
+  "white_x_sprite_replaced_with_loaded_workshop_animation": true,
+  "subscription_gate_mocked_cases_passed": 7,
+  "real_overlay_prompt_interactive_check": "pending"
 }
