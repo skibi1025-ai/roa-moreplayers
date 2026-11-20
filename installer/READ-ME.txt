@@ -43,7 +43,8 @@ There may be bugs. Replays are not currently a feature of this mod.
 Large Workshop character combinations can run out of memory.
 
 If setup fails, copy the error message. If the game reports an error, its
-details are saved in slot-probe.log inside the installed game folder.
+details and memory readings are saved in slot-probe.log inside the
+installed game folder.
 The launcher backs up saves and settings before each launch to:
 %LOCALAPPDATA%\RivalsEightLocal\SaveBackups
 

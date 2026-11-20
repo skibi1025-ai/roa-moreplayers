@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
+#include <psapi.h>
 #include "eight_player_css.h"
 typedef struct { union {double real; void *ptr; int32_t i32;}; int32_t flags,type;} RV;
 typedef void (__cdecl *Event)(void*,void*);
@@ -23,6 +24,19 @@ static int current_room(void*s){
  ((Read)(base+0x554b070-0x400000))(s,*(int*)(base+0x5faaff4-0x400000),(int)0x80000000,&r);return (int)number(&r);
 }
 static void release(RV*r){if(r->type==1||r->type==2)((void(__cdecl*)(RV*))(base+0x401680-0x400000))(r);}
+static unsigned ui_matrix_allocations,ui_matrix_reuses;
+static RV ui_matrix_cache={.type=5};
+static void ui_matrix(RV*out,void*s,void*o,RV*b){
+ typedef struct {int length;RV*values;} MatrixDimension;
+ typedef struct {int refs;MatrixDimension*dims;void*owner;int visited,length;} MatrixArray;
+ if((ui_matrix_cache.type&0xffffff)!=2){builtin(0x5676a10,&ui_matrix_cache,s,o,9,b);ui_matrix_allocations++;}
+ MatrixArray*a=ui_matrix_cache.ptr;
+ if((ui_matrix_cache.type&0xffffff)!=2||!a||a->length!=1||a->dims[0].length!=16||number(b+3)!=0||number(b+4)!=0||number(b+5)!=0){builtin(0x5676a10,out,s,o,9,b);return;}
+ RV*values=a->dims[0].values;
+ for(int i=0;i<16;i++)values[i]=(RV){0};
+ values[0].real=number(b+6);values[5].real=number(b+7);values[10].real=number(b+8);values[12].real=number(b);values[13].real=number(b+1);values[14].real=number(b+2);values[15].real=1;
+ release(out);*out=ui_matrix_cache;a->refs++;ui_matrix_reuses++;
+}
 static int drawing_panel;
 static int drawing_panel_player;
 static int hidden_hud_surface=-1;
@@ -64,7 +78,7 @@ static void panel_surface(Builtin original,int kind,RV*r,void*s,void*o,int n,RV*
  static unsigned logged; if(!(logged&(1u<<kind))){logged|=1u<<kind;logmsg("Panel surface kind=%d width=%g x=%g y=%g",kind,w,a[ix].real,a[ix+1].real);}
  RV saved={.type=5},mat={.type=5},out={.type=5},world={.real=2};builtin(0x56775f0,&saved,s,o,1,&world);
  RV b[9]={{.real=a[ix].real*.5+w*.25},{.real=drawing_panel_y*.5},{0},{0},{0},{0},{.real=.5},{.real=.5},{.real=1}};
- builtin(0x5676a10,&mat,s,o,9,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
+ ui_matrix(&mat,s,o,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
  original(r,s,o,n,a);set[1]=saved;builtin(0x5678660,&out,s,o,2,set);release(&mat);release(&saved);
 }
 #define SURFACE_HOOK(N) static Builtin surface_orig_##N; static void __cdecl surface_hook_##N(RV*r,void*s,void*o,int n,RV*a){panel_surface(surface_orig_##N,N,r,s,o,n,a);}
@@ -87,7 +101,7 @@ static void panel_text(Builtin original,int kind,RV*r,void*s,void*o,int n,RV*a){
  double scale=.75;RV oldfont={.type=5};
  if(renamed){builtin(0x55804c0,&oldfont,s,o,0,NULL);RV font={.real=-1},width={.type=5};builtin(0x5580dd0,&out,s,o,1,&font);builtin(0x55843c0,&width,s,o,1,&replacement);double textscale=kind>=6&&n>5?number(a+5):kind>=4&&n>3?number(a+3):1;if(textscale<0)textscale=-textscale;if(number(&width)*textscale*scale>130)scale=130/(number(&width)*textscale);}
  RV b[9]={{.real=x*(1-scale)},{.real=drawing_panel_y*.5+y*(.5-scale)},{.real=0},{.real=0},{.real=0},{.real=0},{.real=scale},{.real=scale},{.real=1}};
- builtin(0x5676a10,&mat,s,o,9,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
+ ui_matrix(&mat,s,o,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
  original(r,s,o,n,a);set[1]=saved;builtin(0x5678660,&out,s,o,2,set);release(&mat);release(&saved);
  if(renamed){builtin(0x5580dd0,&out,s,o,1,&oldfont);release(&replacement);}
 }
@@ -107,7 +121,7 @@ static void panel_sprite(Builtin original,int part,RV*r,void*s,void*o,int n,RV*a
  static int logged[3];if(!logged[part]){logged[part]=1;logmsg("Panel sprite kind=%d sprite=%d size=%gx%g",part,sprite,w,h);}
  RV saved={.type=5},mat={.type=5},out={.type=5},world={.real=2};builtin(0x56775f0,&saved,s,o,1,&world);
  RV b[9]={{.real=x*.5+w*scale*.25},{.real=drawing_panel_y*.5},{.real=0},{.real=0},{.real=0},{.real=0},{.real=.5},{.real=.5},{.real=1}};
- builtin(0x5676a10,&mat,s,o,9,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
+ ui_matrix(&mat,s,o,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
  original(r,s,o,n,a);set[1]=saved;builtin(0x5678660,&out,s,o,2,set);release(&mat);release(&saved);
 }
 #define SPRITE_HOOK(N,P) static Builtin sprite_orig_##N; static void __cdecl sprite_hook_##N(RV*r,void*s,void*o,int n,RV*a){panel_sprite(sprite_orig_##N,P,r,s,o,n,a);}
@@ -130,12 +144,13 @@ static void __cdecl bg_draw_hook(void*s,void*o){
  double x=*(float*)((char*)s+0xa0),y=*(float*)((char*)s+0xa4);
 
  RV b[9]={{.real=0},{.real=y*.5},{.real=0},{.real=0},{.real=0},{.real=0},{.real=1},{.real=.5},{.real=1}};
- builtin(0x5676a10,&mat,s,o,9,b);RV a[2]={world,mat};builtin(0x5678660,&out,s,o,2,a);
+ ui_matrix(&mat,s,o,b);RV a[2]={world,mat};builtin(0x5678660,&out,s,o,2,a);
  drawing_panel=1;drawing_panel_player=(int)number(var(s,4725));drawing_panel_x=x;drawing_panel_y=y;bg_draw_orig(s,o);drawing_panel=0;drawing_panel_player=0;a[1]=saved;builtin(0x5678660,&out,s,o,2,a);release(&mat);release(&saved);
 }
 static void __cdecl button_create_hook(void*s,void*o){button_create_orig(s,o);last_button=s;}
 static void __cdecl team_create_hook(void*s,void*o){team_create_orig(s,o);last_team=s;}
 typedef RV*(__cdecl *Script)(void*,void*,RV*,int,RV**);
+static void memory_report(const char*,int);
 static Script ugc_set_orig,read_item_name_orig;
 static int loading_workshop_player;
 static char workshop_display_names[9][64],workshop_directories[9][MAX_PATH];
@@ -147,7 +162,7 @@ static void workshop_capture_path(int p,int n,RV**a){
 static RV* __cdecl ugc_set_hook(void*s,void*o,RV*r,int n,RV**a){
  int previous=loading_workshop_player,p=n>0?(int)number(a[0]):0;loading_workshop_player=p>=1&&p<=8?p:0;
  workshop_capture_path(p,n,a);
- MEMORYSTATUSEX memory={.dwLength=sizeof memory};if(GlobalMemoryStatusEx(&memory))logmsg("Workshop load P%d available virtual memory=%llu MiB",p,(unsigned long long)(memory.ullAvailVirtual/(1024*1024)));
+ if(previous==0&&p>=1&&p<=8)memory_report("Workshop load",p);
  RV*result=ugc_set_orig(s,o,r,n,a);loading_workshop_player=previous;return result;
 }
 static RV* __cdecl read_item_name_hook(void*s,void*o,RV*r,int n,RV**a){
@@ -169,10 +184,18 @@ static void setnum(void *o,int id,double n){RV*v=var(o,id);v->real=n;v->flags=0;
 static int seen[128],nseen;
 static unsigned fixture_slots;
 static void logmsg(const char *fmt,...) {char path[MAX_PATH]; snprintf(path,sizeof path,"%s\\slot-probe.log",folder);FILE*f=fopen(path,"a");if(!f)return;va_list ap;va_start(ap,fmt);vfprintf(f,fmt,ap);va_end(ap);fputc('\n',f);fclose(f);}
+static void memory_report(const char*phase,int player){
+ MEMORYSTATUSEX m={.dwLength=sizeof m};PROCESS_MEMORY_COUNTERS_EX p={.cb=sizeof p};
+ typedef BOOL(WINAPI*ReadMemory)(HANDLE,PPROCESS_MEMORY_COUNTERS,DWORD);
+ ReadMemory read=(ReadMemory)GetProcAddress(GetModuleHandleA("kernel32.dll"),"K32GetProcessMemoryInfo");
+ if(!GlobalMemoryStatusEx(&m))return;
+ if(read)read(GetCurrentProcess(),(PPROCESS_MEMORY_COUNTERS)&p,sizeof p);
+ logmsg("Memory %s P%d private=%llu MiB peak-working=%llu MiB free-virtual=%llu MiB UI-matrices=%u reused=%u",phase,player,(unsigned long long)p.PrivateUsage/(1024*1024),(unsigned long long)p.PeakWorkingSetSize/(1024*1024),(unsigned long long)m.ullAvailVirtual/(1024*1024),ui_matrix_allocations,ui_matrix_reuses);
+}
 #include "release_guard.h"
 static void __cdecl test_failure(const char *format,...){
  char message[4096];va_list ap;va_start(ap,format);vsnprintf(message,sizeof message,format,ap);va_end(ap);
- logmsg("TEST FAILED: %s",message);
+ logmsg("TEST FAILED: %s",message);memory_report("failure",0);
  MEMORYSTATUSEX memory={.dwLength=sizeof memory};if(GlobalMemoryStatusEx(&memory))logmsg("Failure available virtual memory=%llu MiB",(unsigned long long)(memory.ullAvailVirtual/(1024*1024)));
  uintptr_t*trace=*(uintptr_t**)(base+0x604a560-0x400000);
  for(int i=0;trace&&i<24;i++){logmsg("GML %s line %lu",(char*)trace[1],(unsigned long)trace[2]);trace=(uintptr_t*)trace[0];}
@@ -387,7 +410,7 @@ static int native_spawn_count,creating_extra;
 static void __cdecl fighter_create_hook(void*s,void*o){fighter_create_orig(s,o);last_fighter=s;spawn_anchor_x=*(float*)((char*)s+0xa0);spawn_anchor_y=*(float*)((char*)s+0xa4);
  if(!creating_extra&&native_spawn_count<4){int index=native_spawn_count++;native_spawn_x[index]=spawn_anchor_x;native_spawn_y[index]=spawn_anchor_y;logmsg("Native spawn %d x=%g y=%g",index,spawn_anchor_x,spawn_anchor_y);}
 }
-static void __cdecl hud_create_hook(void*s,void*o){stage_spawned=0;match_ticks=0;memset(match_slots,0,sizeof match_slots);memset(match_eliminated_at,0,sizeof match_eliminated_at);memset(match_previous_stocks,0,sizeof match_previous_stocks);memset(initialized_spawn_instance,0,sizeof initialized_spawn_instance);memset(fighter_diagnostic_frames,0,sizeof fighter_diagnostic_frames);hud_create_orig(s,o);}
+static void __cdecl hud_create_hook(void*s,void*o){memory_report("match start",0);stage_spawned=0;match_ticks=0;memset(match_slots,0,sizeof match_slots);memset(match_eliminated_at,0,sizeof match_eliminated_at);memset(match_previous_stocks,0,sizeof match_previous_stocks);memset(initialized_spawn_instance,0,sizeof initialized_spawn_instance);memset(fighter_diagnostic_frames,0,sizeof fighter_diagnostic_frames);hud_create_orig(s,o);}
 static void spawn_extra_fighters(void*s,void*o){
  if(!local_eight||stage_spawned)return;
  void*g=*(void**)(base+0x604a8d8-0x400000);
@@ -492,7 +515,7 @@ static void __cdecl bg_create_hook(void*s,void*o){bg_create_orig(s,o);last_bg=s;
 static void __cdecl local_hook(void*s,void*o){nseen=0;fixture_slots=0;native_spawn_count=0;memset(css_was_cpu,0,sizeof css_was_cpu);
  void*entry_global=*(void**)(base+0x604a8d8-0x400000);extend_slot_arrays(entry_global);
  patch_word(0x419c4f2,0x40140000,0x40220000);patch_word(0x419e062,0x40140000,0x40220000);
- local_orig(s,o);logmsg("Local room entered");
+ local_orig(s,o);logmsg("Local room entered");memory_report("character select",0);
  void *global=*(void**)(base+0x604a8d8-0x400000);
  for(int p=5;p<=8;p++)array_number(global,4786,p,0);
  for(int device=0;device<16;device++){
@@ -506,7 +529,7 @@ static void __cdecl local_hook(void*s,void*o){nseen=0;fixture_slots=0;native_spa
 #ifdef EXPERIMENTAL_MATCH
  const uint32_t player_limits[]={0x40eb8fc,0x40ed900,0x40eea42,0x34836bc,0x34839de,0x34850ee,0xb5ac62,0xb6a50a,0xb6b667,0xb6bea6,0xb6c024};
  for(unsigned i=0;i<sizeof player_limits/sizeof player_limits[0];i++)if(!patch_word(player_limits[i],0x40100000,0x40200000))stop_release("Eight-player match classification signature mismatch.");
- const uint32_t animation_sentinels[]={0x735a30,0x735ae3,0xa64aa0};
+ const uint32_t animation_sentinels[]={0x735a30,0x735ae3,0xa64aa0,0xa809f9,0xa8979f,0xa89f72,0xa8ba71,0xa363e4,0x368922e,0x36c2ea3,0x36d5afb};
  for(unsigned i=0;i<sizeof animation_sentinels/sizeof animation_sentinels[0];i++)if(!patch_word(animation_sentinels[i],0x40140000,0x40220000))stop_release("Workshop animation signature mismatch.");
  const uint32_t player_cutoffs[]={0xb6c8e9,0xb6e622,0xb70e4d,0x40e5732};
  for(unsigned i=0;i<sizeof player_cutoffs/sizeof player_cutoffs[0];i++)if(!patch_word(player_cutoffs[i],0x40140000,0x40220000))stop_release("Eight-player knockout signature mismatch.");
@@ -604,6 +627,7 @@ static void setup(void){static int done;if(done)return;done=1;base=(uintptr_t)Ge
   if(!supported_executable())stop_release("Unsupported game executable. This build requires the tested Rivals of Aether 2.1.9.1 executable. No mod hooks were installed.");
   if(!install_test_error_handler()){logmsg("Test error-handler signature mismatch; no slot hooks installed");return;}
   if(!patch_word(0x331bf22,0x40140000,0x40200000)||!patch_word(0x331cd34,0x40140000,0x40200000)){logmsg("Workshop initialization signature mismatch");return;}
+  if(!patch_word(0x334aca2,0x40100000,0x40200000)||!patch_word(0x333fec2,0x40140000,0x40200000))stop_release("Workshop resource ownership signature mismatch.");
   unsigned char*bound=(unsigned char*)(base+0xc8f618-0x400000);DWORD old;
   if(*(uint32_t*)bound!=0x40200000||!VirtualProtect(bound,4,PAGE_EXECUTE_READWRITE,&old)){logmsg("Input initialization signature mismatch; no slot hooks installed");return;}
   *(uint32_t*)bound=0x40220000;VirtualProtect(bound,4,old,&old);FlushInstructionCache(GetCurrentProcess(),bound,4);

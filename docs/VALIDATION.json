@@ -1,5 +1,5 @@
 {
-  "version": "0.1.4-preview",
+  "version": "0.1.5-preview",
   "status": "release validation complete",
   "native_eight_player_results_cycle": true,
   "human_confirm_waits_for_other_human": true,
@@ -19,14 +19,30 @@
   "logs_sha256": {
     "native-results-final.log": "b0fbf6df17d8c42fd713b8f91b1e268f8a24a1510e559785f265461268c5ce25",
     "workshop-results-final.log": "f1c659627de019ffaa4991d2dc8efa919c57d2fc61f08fda7e44660c5d0ae20b",
-    "audio-loop-test.log": "bdeae7d2d874ff4e3cde34882c8813ba5338026d886b227518018c4595049033"
+    "audio-loop-test.log": "bdeae7d2d874ff4e3cde34882c8813ba5338026d886b227518018c4595049033",
+    "baseline-game.log": "8d07b3b98c7f80bfdfa2d5fd5814e0125fc947600ad9f2ad00b8c0b8ef62cc26",
+    "memory-before.log": "f12dcc253f17b37ae591fc0d1fa5d2eb478cdd599f8afd34c031590036267f07",
+    "memory-after.log": "8d9b24fa5e7ae8674d581d1081741e456335cfd575d1c7c90e1b153e2e6311b6",
+    "results-memory.log": "5ccf623f497b28818fa630050ae147bec80288fa654e727a5dff3cdeba84bbea",
+    "shared-character.log": "8a6a4dcf22fb10d6c2cc0c1719b3a69a258e214554a7d9e12248d44a4aaeb7fb"
   },
   "native_results_loop_transition_verified": true,
   "original_steam_file_hashes_unchanged": true,
-  "dll_sha256": "9fd364715384a6a1b578643e6fc5220776b3de5746ca2a91c980030fa000fad9",
-  "baseline_validation_version": "0.1.3-preview",
+  "dll_sha256": "ba4a0a1c9c097d9f16e5ab1dcdad2abc43986a9bfcfd9ab2e20fd5c16e94ac09",
+  "baseline_validation_version": "0.1.4-preview",
   "eight_simulated_human_workshop_fighters": true,
   "slot_five_duck_and_bubbles_roster_swap": true,
   "all_eight_human_inputs_independent": true,
-  "white_x_sprite_replaced_with_loaded_workshop_animation": true
+  "white_x_sprite_replaced_with_loaded_workshop_animation": true,
+  "five_roster_memory_profile_completed": true,
+  "peak_settled_private_memory_reduction_percent": 51.81305007108712,
+  "baseline_match_frames_profiled": 3600,
+  "ui_matrix_matches_native_output": true,
+  "cached_ui_matrix_owning_references_after_test": 1,
+  "results_cache_reuse_verified": true,
+  "results_owned_images_deleted": 9,
+  "results_png_budget_cases_passed": 5,
+  "extra_slot_standard_initialization_and_drawing": true,
+  "shared_character_preserved_during_other_slot_reselection": true,
+  "shared_character_match_completed": true
 }

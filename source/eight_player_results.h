@@ -18,17 +18,36 @@ static RV* results_custom_field(void*g,int p,int field){
  if(context<0||context>=a->length||!a->dims||field<0||field>=a->dims[context].length||!a->dims[context].values)return NULL;return a->dims[context].values+field;
 }
 static int results_owned[9][2];
+static struct {char path[MAX_PATH];int sprite;} results_image_cache[9];
+static int results_image_count;
+static uint64_t results_image_bytes;
+static void results_release_images(void*s,void*o){
+ for(int i=0;i<results_image_count;i++)if(results_image_cache[i].sprite>=0){RV image={.real=results_image_cache[i].sprite},out={.type=5};builtin(0x5687b50,&out,s,o,1,&image);release(&out);}
+ results_image_count=0;results_image_bytes=0;
+ for(int p=1;p<=8;p++)for(int k=0;k<2;k++)results_owned[p][k]=-1;
+}
+static uint64_t results_png_bytes(const char*path){
+ unsigned char h[24];FILE*f=fopen(path,"rb");if(!f)return UINT64_MAX;size_t n=fread(h,1,sizeof h,f);fclose(f);
+ static const unsigned char signature[]={137,80,78,71,13,10,26,10};if(n!=sizeof h||memcmp(h,signature,8)||memcmp(h+12,"IHDR",4))return UINT64_MAX;
+ uint64_t w=((uint32_t)h[16]<<24)|((uint32_t)h[17]<<16)|((uint32_t)h[18]<<8)|h[19];
+ uint64_t height=((uint32_t)h[20]<<24)|((uint32_t)h[21]<<16)|((uint32_t)h[22]<<8)|h[23];
+ if(!w||!height||w>16384||height>16384)return UINT64_MAX;
+ return w*height*4;
+}
 static int results_load_image(void*g,void*s,void*o,int p,int field,int owned){
  RV value={.type=5};RV*path=results_custom_field(g,p,field);char filename[MAX_PATH];
  if(workshop_directories[p][0]){snprintf(filename,sizeof filename,"%s\\%s",workshop_directories[p],field==2?"portrait.png":"result_small.png");if(GetFileAttributesA(filename)!=INVALID_FILE_ATTRIBUTES){((void(__cdecl*)(RV*,const char*))(base+0x554a750-0x400000))(&value,filename);path=&value;}}
  if(!path||(path->type&0xffffff)!=1||!path->ptr)return -1;
  const char*existing=*(const char**)path->ptr;if(!existing||GetFileAttributesA(existing)==INVALID_FILE_ATTRIBUTES){release(&value);return -1;}
- RV args[6]={*path,{.real=1},{0},{0},{0},{0}},out={.type=5};builtin(0x5687620,&out,s,o,6,args);int sprite=(int)number(&out);release(&out);release(&value);
+ for(int i=0;i<results_image_count;i++)if(!_stricmp(results_image_cache[i].path,existing)){int id=results_image_cache[i].sprite;release(&value);return id;}
+ uint64_t bytes=results_png_bytes(existing);MEMORYSTATUSEX memory={.dwLength=sizeof memory};
+ if(results_image_count>=9||bytes>16ULL*1024*1024||results_image_bytes+bytes>32ULL*1024*1024||(GlobalMemoryStatusEx(&memory)&&memory.ullAvailVirtual<128ULL*1024*1024)){logmsg("Results image P%d uses existing head to preserve memory",p);release(&value);return -1;}
+ RV args[6]={*path,{.real=1},{0},{0},{0},{0}},out={.type=5};builtin(0x5687620,&out,s,o,6,args);int sprite=(int)number(&out);release(&out);if(sprite>=0){snprintf(results_image_cache[results_image_count].path,MAX_PATH,"%s",existing);results_image_cache[results_image_count++].sprite=sprite;results_image_bytes+=bytes;}release(&value);
  if(sprite>=0){results_owned[p][owned]=sprite;logmsg("Results image P%d field=%d loaded sprite=%d",p,field,sprite);}return sprite;
 }
-static void __cdecl results_create(void*s,void*o){
+static void __cdecl results_create(void*s,void*o){memory_report("results",0);
  void*g=*(void**)(base+0x604a8d8-0x400000);
- results_custom=0;results_frames=0;results_stats=0;results_confirmed=0;results_ready_timer=0;for(int p=1;p<=8;p++)for(int k=0;k<2;k++)results_owned[p][k]=-1;
+ results_release_images(s,o);results_custom=0;results_frames=0;results_stats=0;results_confirmed=0;results_ready_timer=0;for(int p=1;p<=8;p++)for(int k=0;k<2;k++)results_owned[p][k]=-1;
  if(local_eight&&number(var(g,4208))==0)for(int p=5;p<=8;p++)if(array_value(g,4737,p)!=0)results_custom=1;
  if(results_custom){
   results_music_loop=0;results_music_started=0;results_music_call(0x30d3910,s,o,-1);results_music_call(0x30d42a0,s,o,-1);RV group={.real=2},loaded={.type=5};builtin(0x56adf30,&loaded,s,o,1,&group);release(&loaded);
@@ -47,7 +66,7 @@ static void __cdecl results_create(void*s,void*o){
    results_players[p].eliminated=match_eliminated_at[p];if(results_players[p].stocks<=0&&!results_players[p].eliminated)results_players[p].eliminated=match_ticks+1;
    results_players[p].portrait=hud_custom_active[p]?results_players[p].head:4070;results_players[p].portrait_frame=hud_custom_active[p]?0:results_players[p].frame;
    results_players[p].row_sprite=results_players[p].head;results_players[p].row_frame=results_players[p].frame;
-   if(hud_custom_active[p]){int small=results_load_image(g,s,o,p,3,0);if(small>=0){results_players[p].row_sprite=small;results_players[p].row_frame=0;}}
+   if(results_players[p].active&&hud_custom_active[p]){int small=results_load_image(g,s,o,p,3,0);if(small>=0){results_players[p].row_sprite=small;results_players[p].row_frame=0;}}
 
    static const char*names[]={"","RANDOM","ZETTERBURN","ORCANE","WRASTOR","KRAGG","FORSBURN","MAYPUL","ABSA","ETALUS","ORI","RANNO","CLAIREN","SYLVANOS","ELLIANA","SHOVEL KNIGHT","POMME","MOLLO","OLYMPIA","HODAN","SANDBAG"};int select=(int)array_value(g,4805,p);
    snprintf(results_players[p].name,sizeof results_players[p].name,"%s",select>=2&&select<=20?names[select]:"WORKSHOP FIGHTER");
@@ -124,7 +143,7 @@ static void __cdecl results_draw(void*s,void*o){
  uint32_t getters[]={0x55804c0,0x5580450,0x5580410,0x55804e0,0x5580600};
  for(int i=0;i<5;i++){saved[i]=(RV){.type=5};builtin(getters[i],&saved[i],s,o,0,NULL);}
  builtin(0x56775f0,&oldmat,s,o,1,&world);
- RV b[9]={{0},{0},{0},{0},{0},{0},{.real=1},{.real=1},{.real=1}};builtin(0x5676a10,&mat,s,o,9,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
+ RV b[9]={{0},{0},{0},{0},{0},{0},{.real=1},{.real=1},{.real=1}};ui_matrix(&mat,s,o,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
  RV gw={.type=5},gh={.type=5};builtin(0x5607a50,&gw,s,o,0,NULL);builtin(0x5607a10,&gh,s,o,0,NULL);double w=number(&gw),h=number(&gh);
  static const unsigned colors[8]={0x3028ee,0xe6a400,0x43b630,0xba70df,0x167ef7,0xda79bb,0x4edede,0xc8c8c8};
  int total=0,order[8];for(int p=1;p<=8;p++)if(results_players[p].active)order[total++]=p;
@@ -185,5 +204,5 @@ static void __cdecl results_draw(void*s,void*o){
 static void __cdecl results_alarm0(void*s,void*o){if(!results_custom)results_alarm0_orig(s,o);}
 static void __cdecl results_alarm1(void*s,void*o){if(!results_custom)results_alarm1_orig(s,o);}
 static void __cdecl results_alarm2(void*s,void*o){if(!results_custom)results_alarm2_orig(s,o);}
-static void __cdecl results_other5(void*s,void*o){if(!results_custom)results_other5_orig(s,o);else{for(int p=1;p<=8;p++)for(int k=0;k<2;k++)if(results_owned[p][k]>=0){RV image={.real=results_owned[p][k]},out={.type=5};builtin(0x5687b50,&out,s,o,1,&image);results_owned[p][k]=-1;}results_music_call(0x30d3910,s,o,-1);results_music_call(0x30d42a0,s,o,-1);}}
+static void __cdecl results_other5(void*s,void*o){results_release_images(s,o);if(!results_custom)results_other5_orig(s,o);else{results_music_call(0x30d3910,s,o,-1);results_music_call(0x30d42a0,s,o,-1);}}
 static void __cdecl results_other72(void*s,void*o){if(!results_custom)results_other72_orig(s,o);}

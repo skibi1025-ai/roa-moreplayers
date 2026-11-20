@@ -1,17 +1,17 @@
 {
-  "version": "0.1.4-preview",
+  "version": "0.1.5-preview",
   "files": [
     {
       "path": "../../docs/RELEASE-NOTES.md",
-      "sha256": "d9fb1c7afff5e798e5643c2f90671116eeac43d778c0b3f593d87821f7b7af16"
+      "sha256": "577f1f568922b89b82657b92627b7dde9eabed757f943a62aea8e6d5edbc9289"
     },
     {
       "path": "../../docs/TESTING.md",
-      "sha256": "948185b82e4a8c104944c18f76c135272169c9e3171112a64661a67915cf4d94"
+      "sha256": "fe6bd6b4a058e5e23decf64a5abf2031a04056d3030ed3cc574b6820908db527"
     },
     {
       "path": "../../docs/VALIDATION.json",
-      "sha256": "f936b6e148dc3d40ccc4489f0b278fedc35e9a77c0f317beea8fa72753a61591"
+      "sha256": "d708fa8d1af06138ce640e28b6442d95b0b303992b0d4b14d31356b64fe7f0f7"
     },
     {
       "path": "Install.ps1",
@@ -31,7 +31,7 @@
     },
     {
       "path": "mod/catch_error_mini.dll",
-      "sha256": "9fd364715384a6a1b578643e6fc5220776b3de5746ca2a91c980030fa000fad9"
+      "sha256": "ba4a0a1c9c097d9f16e5ab1dcdad2abc43986a9bfcfd9ab2e20fd5c16e94ac09"
     },
     {
       "path": "Setup.cmd",
@@ -55,11 +55,11 @@
     },
     {
       "path": "../../source/eight_player_hud.h",
-      "sha256": "8f7181b2a3fa1ca19e71ce9beee93b48ab0e4e26728b7218c4ad22cfef282164"
+      "sha256": "8d6cbffd04eedd679e7a9d3f588b5736c7fa55d277f7a8f09a880e0b90c1dd5a"
     },
     {
       "path": "../../source/eight_player_results.h",
-      "sha256": "01a634209dca522f98d9f594c09ab689abb010cdb1423df3a74bb200274773e8"
+      "sha256": "f336e3f74fc49aae9df8075a87f73eccce69434883f7b0295f01ba4363a71886"
     },
     {
       "path": "../../source/match_harness.h",
@@ -75,7 +75,7 @@
     },
     {
       "path": "../../source/slot_probe.c",
-      "sha256": "2f6fd0a24f6dfdb55793bd490f9a22b2f3be598e774aacc4ba7774ca922a755c"
+      "sha256": "837ecf15244f62b9e615e3c2d1c90b5a1469667bfcac2cb5cd289fbc946f45c8"
     },
     {
       "path": "Update.cmd",
@@ -91,11 +91,15 @@
     },
     {
       "path": "../READ-ME.txt",
-      "sha256": "fae2423bc07811b8f3d55ea62741ef772545294d5e7ad54a1136cec63f036f11"
+      "sha256": "00ca05b8dc87ce61a25a7b4c447b5e02ddfe25dd73b3cc7f717c9f581ab00655"
     },
     {
       "path": "../Setup.cmd",
       "sha256": "d7812b229e910e7e9b24412bc7bcc0643d2645e5477fec8e2d83d6d780d932eb"
+    },
+    {
+      "path": "../../docs/MEMORY-PROFILE.json",
+      "sha256": "697bba7280ebfb0b070aeaacd76de0dc3e40954b5134a753246117f8a93a6984"
     }
   ]
 }

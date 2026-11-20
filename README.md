@@ -28,6 +28,8 @@ Press **Z** on the keyboard or **A** on a controller to ready up. The screen con
 
 Workshop characters and stages are loaded from their existing location. The mod DLL and its backups share disk data through hard links when supported. A small DLL copy is used when linking is unavailable, such as between different drives. Extract future releases into a new folder rather than overwriting linked files.
 
+Workshop loading reuses and cleans up resources across all eight slots. Very large fighter and stage combinations can still exhaust the game's memory. Memory readings are recorded in `slot-probe.log` inside the installed game folder.
+
 ## Game location
 
 Setup creates a separate game copy at `%LOCALAPPDATA%\RivalsEightLocal\Game` by default. Use **Launch.cmd** in the extracted download folder to play; there is no need to find the installed folder. The original Steam files are unchanged.

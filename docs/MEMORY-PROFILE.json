@@ -1,0 +1,46 @@
+{
+  "before": {
+    "settled_private_bytes": [
+      1076498432,
+      2287767552,
+      1908473856,
+      3117211648,
+      2733338624
+    ],
+    "matrix_checks": true,
+    "finished": true
+  },
+  "after": {
+    "settled_private_bytes": [
+      937709568,
+      1480957952,
+      956362752,
+      1502089216,
+      967462912
+    ],
+    "matrix_checks": true,
+    "finished": true
+  },
+  "peak_settled_reduction_percent": 51.81305007108712,
+  "method": "Five selections: roster A, roster B, A, B, A; eight simulated human inputs; same Workshop assets and copied executable. Values are private committed bytes at each settled roster, not total installed storage.",
+  "roster_a": [
+    "3014312006",
+    "2085116778",
+    "2242316629",
+    "3690442640",
+    "3037252388",
+    "2139756191",
+    "2058525660",
+    "3162607695"
+  ],
+  "roster_b": [
+    "3249604851",
+    "2287107238",
+    "3422050041",
+    "3299337477",
+    "2538402112",
+    "2297617172",
+    "2426361313",
+    "2820818386"
+  ]
+}

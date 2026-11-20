@@ -57,7 +57,7 @@ static void __cdecl eight_hud_draw(void*s,void*o){
  RV saved[6],out={.type=5};uint32_t getters[]={0x55804c0,0x5580450,0x5580410,0x55804e0,0x5580600};
  for(int i=0;i<5;i++){saved[i]=(RV){.type=5};builtin(getters[i],&saved[i],s,o,0,NULL);}
  RV world={.real=2},mat={.type=5};saved[5]=(RV){.type=5};builtin(0x56775f0,&saved[5],s,o,1,&world);
- RV b[9]={{0},{0},{0},{0},{0},{0},{.real=1},{.real=1},{.real=1}};builtin(0x5676a10,&mat,s,o,9,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
+ RV b[9]={{0},{0},{0},{0},{0},{0},{.real=1},{.real=1},{.real=1}};ui_matrix(&mat,s,o,b);RV set[2]={world,mat};builtin(0x5678660,&out,s,o,2,set);
  RV gw={.type=5},gh={.type=5};builtin(0x5607a50,&gw,s,o,0,NULL);builtin(0x5607a10,&gh,s,o,0,NULL);
  double width=number(&gw),height=number(&gh);if(width<1)width=960;if(height<1)height=540;
  hud_value(0x5580d70,s,o,1);hud_value(0x5580df0,s,o,1);hud_value(0x5580e50,s,o,0);
